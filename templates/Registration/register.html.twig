@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="card-title">Register</h1>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form) }}
+                            <div class="mb-3">
+                                {{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre Email...'}}) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom...'}}) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom...'}}) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(form.profileImage, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
