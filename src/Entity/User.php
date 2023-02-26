@@ -1,13 +1,20 @@
 <?php
 
+
+
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity('email', message : 'Cette adresse mail est déjà utilisée.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -15,26 +22,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, unique: true)]
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\NotBlank(message : 'Vous devez rentrer une adresse mail.')]
+    #[Assert\Email(message:'Veuillez me donner une adresse mail valide.')]
     private ?string $email = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(message : 'Le mot de passe ne peut pas être vide.')]
+    #[Assert\Length(min: 12, max: 255, 
+    minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.', 
+    maxMessage: 'Le mot de passe ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\Regex(
+        pattern: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>�?~])/x',
+        message: 'Veuillez relire les conditions correctes de création de  mot de passe.'
+    )]
+    #[Assert\IdenticalTo(propertyPath: "password", 
+        message: 'Les mots de passe ne correspondent pas.'
+    )]
     private ?string $password = null;
 
-    #[ORM\Column(length: 200, nullable: true)]
+    #[ORM\Column(type: 'string', length: 200, nullable: true)]
+    #[Assert\NotBlank(message: 'Le prénom ne peut pas être vide.')]
     private ?string $firstName = null;
 
-    #[ORM\Column(length: 200)]
+    #[ORM\Column(type: 'string', length: 200)]
+    #[Assert\NotBlank(message:'Le nom ne peut pas être vide.')]
     private ?string $lastName = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = null;
+
+    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Consent::class, cascade: ["persist"])]
+    private Collection $consents;
+
+    public function __construct()
+    {
+        $this->consents = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,10 +115,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
+    
 
     public function setPassword(string $password): self
     {
@@ -141,4 +172,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Consent>
+     */
+    public function getConsents(): Collection
+    {
+        return $this->consents;
+    }
+
+    public function addConsent(Consent $consent): self
+    {
+        if (!$this->consents->contains($consent)) {
+            $this->consents[] = $consent;
+            $consent->setUserId($this);
+        }
+    
+        return $this;
+    }
+    
+
+    public function removeConsent(Consent $consent): self
+    {
+        if ($this->consents->removeElement($consent)) {
+            // set the owning side to null (unless already changed)
+            if ($consent->getUserId() === $this) {
+                $consent->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

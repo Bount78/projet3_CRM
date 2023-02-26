@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,23 +10,27 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-
 class SecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_login')]
+
+    #[Route(path: '/', name: 'app_login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
     {
         $form = $this->createForm(LoginFormType::class);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Do something if the form is submitted and valid, e.g. authenticate the user
         }
-    
+
+
+            $registerLink = $this->generateUrl('register');
+
+            
         return $this->render('security/login.html.twig', [
             'form' => $form->createView(),
             'error' => $authenticationUtils->getLastAuthenticationError(),
-            'last_username' => $authenticationUtils->getLastUsername(),
+            'register_link' => $registerLink,
         ]);
     }
 

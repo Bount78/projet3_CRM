@@ -2,18 +2,37 @@
 
 namespace App\Form;
 
+use App\Entity\User;
+use App\Entity\Consent;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class RegistrationFormType extends AbstractType
 {
+    private $translator;
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator)
+    {
+        $this->entityManager = $entityManager;
+        $this->translator = $translator;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -25,28 +44,70 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Votre Email : ',
+                'attr' => ['type' => 'email'],
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'Tapez votre mot de passe'],
-                'second_options' => ['label' => 'Retapez votre mot de passe'],
+                'first_options' => [
+                    'label' => 'Tapez votre mot de passe : ',
+                    'attr' => ['class' => 'form-control mb-3 ']
+                ],
+                'second_options' => [
+                    'label' => 'Retapez votre mot de passe : ',
+                    'attr' => ['class' => 'form-control mb-3 ']
+                ],
+                'required' => true,
+                'invalid_message' => 'Les mots de passe ne correspondent pas.'
             ])
             ->add('profileImage', FileType::class, [
                 'label' => 'Image de profil (JPG, PNG, GIF)',
                 'required' => false,
             ])
+            ->add('consent', CheckboxType::class, [
+                'mapped' => false,
+                'label' => 'J\'accepte les termes et conditions, ainsi que la collecte et le traitement de mes données personnelles conformément à votre politique de confidentialité',
+                'required' => true,
+                'constraints' => [
+                    new IsTrue([
+                        'message' => 'Vous devez accepter la politique de confidentialité pour continuer.'
+                    ])
+                ]
+            ])
             ->add('submit', SubmitType::class, [
-                'label' => 'S\'enregistrer',
-                'attr' => ['class' => 'btn btn-primary'],
+                'label' => 'S\'inscrire',
+                'attr' => ['class' => 'btn btn-primary btn-lg btn-block mt-4']
             ]);
-            
 
+
+
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+
+                if (!$form->isValid()) {
+                    return;
+                }
+                $user = $event->getData();
+
+                if ($form->get('consent')->getData()) {
+                    $consent = new Consent();
+                    $consent->setUserId($user);
+                    $consent->setAccept(true);
+                    $consent->setDateConsenti(new \DateTimeImmutable());
+                    $this->entityManager->persist($consent);
+                }
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+            }
+        );
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => User::class,
         ]);
     }
 }

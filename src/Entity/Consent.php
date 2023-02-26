@@ -14,37 +14,35 @@ class Consent
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'consents')]
-    private ?user $userId = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $finalite = null;
+    private ?string $finalite = "accepte la polique de confidentialité.";
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $accept = null;
+    private ?bool $accept = false;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $date_consenti = null;
+    
+     #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
+     
+    private $date_consenti;
+
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'consents')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $userId;
+
+    public function __toString(): string
+    {
+        return (string) $this->getId();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?user
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(?user $userId): self
-    {
-        $this->userId = $userId;
-
-        return $this;
-    }
 
     public function getFinalite(): ?string
     {
@@ -90,6 +88,18 @@ class Consent
     public function setDateConsenti(\DateTimeImmutable $date_consenti): self
     {
         $this->date_consenti = $date_consenti;
+
+        return $this;
+    }
+
+    public function getUserId(): ?user
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?user $userId): self
+    {
+        $this->userId = $userId;
 
         return $this;
     }

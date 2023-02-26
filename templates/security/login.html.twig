@@ -3,48 +3,58 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+	{% if error %}
+		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	{% endif %}
+	<form method="post">
+		{% if error %}
+			<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+		{% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+		{% if app.user %}
+			<div class="mb-3">
+				You are logged in as
+				{{ app.user.userIdentifier }},
+				<a href="{{ path('app_logout') }}">Logout</a>
+			</div>
+		{% endif %}
 
 
-     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="card-title">Log in !</h1>
-                    </div>
-                    <div class="card-body">
-                        {{ form_start(form) }}
-                            <div class="mb-3">
-                                {{ form_row(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
-                            </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Sign in'|trans }}</button>
-                            {# {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }} #}
-                        {{ form_end(form) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</form>
+		<div class="container mt-5">
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h1 class="card-title">Log in !</h1>
+						</div>
+						<div class="card-body">
+							{{ form_start(form) }}
+							<div class="mb-3">
+								{{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
+							</div>
+							<div class="mb-3">
+								{{ form_row(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
+							</div>
+							<button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Sign in'|trans }}</button>
+							{# {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }} #}
+							{{ form_end(form) }}
+							{% if register_link is defined %}
+								<p>Pas encore inscrit ?
+									<a href="{{ register_link }}">S'inscrire</a>
+								</p>
+							{% endif %}
+							{% for message in app.flashes('success') %}
+								<div class="alert alert-success">{{ message }}</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 {% endblock %}
 
-    {# <div class="container">
+{# <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card">

@@ -1,38 +1,66 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
-
+{% block title %}Register
+{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="card-title">Register</h1>
-                    </div>
-                    <div class="card-body">
-                        {{ form_start(form) }}
-                            <div class="mb-3">
-                                {{ form_row(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre Email...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_row(form.profileImage, {'attr': {'class': 'form-control'}}) }}
-                            </div>
-                            {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
-                        {{ form_end(form) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card custom-card">
+					<div class="card-header">
+						<h1 class="card-title">Register</h1>
+					</div>
+					<div class="card-body">
+						{{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+						<div class="mb-3">
+							{{ form_row(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre Email...'}}) }}
+						</div>
+						<div class="mb-3">
+							{{ form_row(registrationForm.firstName, {'attr': {'class': 'form-control', 'placeholder': 'Votre prénom...'}}) }}
+
+						</div>
+						<div class="mb-3">
+							{{ form_row(registrationForm.lastName, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom...'}}) }}
+
+						</div>
+						<div class="mb-3">
+							{{ form_row(registrationForm.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
+							{% if registrationForm.password.vars.errors|length %}
+								<div class="invalid-feedback">{{ form_errors(registrationForm.password)|trans }}</div>
+							{% endif %}
+							<p class="border border-warning rounded p-2 text-center text-bg-warning ">Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.</p>
+						</div>
+						<div class="mb-3">
+							{{ form_row(registrationForm.profileImage, {'attr': {'class': 'form-control'}}) }}
+						</div>
+						<div class="form-check mb-3">
+							<div class="row align-items-center">
+								{% if form_errors(registrationForm.consent) %}
+									<div class="alert">
+										{{ form_errors(registrationForm.consent) }}
+									</div>
+								{% endif %}
+								<div class="col-1">
+									{{ form_widget(registrationForm.consent, {'attr': {'class': 'form-check-input'}}) }}
+								</div>
+								<div class="col">
+									<label class="form-check-label" for="{{ registrationForm.consent.vars.id }}">
+										{{ registrationForm.consent.vars.label }}
+									</label>
+								</div>
+							</div>
+						</div>
+						{{ form_widget(registrationForm.submit, {'attr': {'class': 'btn btn-primary w-100'}}) }}
+						{{ form_end(registrationForm) }}
+						{% if login_link is defined %}
+							<p>Déjà inscrit ?
+								<a href="{{ login_link }}">Se Connecter</a>
+							</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
