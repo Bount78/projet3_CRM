@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity('email', message : 'Cette adresse mail est déjà utilisée.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -64,6 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->consents = new ArrayCollection();
+        $this->roles[] = 'ROLE_USER';
     }
 
     public function getId(): ?int
@@ -111,6 +113,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    
 
     /**
      * @see PasswordAuthenticatedUserInterface

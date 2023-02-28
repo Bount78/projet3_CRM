@@ -14,12 +14,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Validator\Constraints\File;
 
 class RegistrationFormType extends AbstractType
 {
@@ -62,6 +62,19 @@ class RegistrationFormType extends AbstractType
             ->add('profileImage', FileType::class, [
                 'label' => 'Image de profil (JPG, PNG, GIF)',
                 'required' => false,
+                'attr' => [
+                    'accept' => '.jpg,.jpeg,.png,.gif'
+                ],
+                'constraints' => [
+                    new File([
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/png',
+                            'image/gif'
+                        ],
+                        'mimeTypesMessage' => 'Veuillez télécharger une image au format JPG, PNG ou GIF',
+                    ])
+                ]
             ])
             ->add('consent', CheckboxType::class, [
                 'mapped' => false,

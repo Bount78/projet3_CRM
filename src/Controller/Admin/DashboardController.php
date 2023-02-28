@@ -13,7 +13,8 @@ class DashboardController extends AbstractDashboardController
     #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-        return parent::index();
+        // return parent::index();
+        return $this->render('admin/dashboard.html.twig');
 
         // Option 1. You can make your dashboard redirect to some common page of your backend
         //
@@ -35,12 +36,19 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Projet3CRM');
+            ->setTitle('Mon Dashboard personnalisé')
+            ->setFaviconPath('/path/to/favicon.ico');
     }
 
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::section('Mes contacts', 'fa-solid fa-address-book');
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        // Vérifie si l'utilisateur a le rôle "ROLE_ADMIN"
+        if ($this->isGranted('ROLE_ADMIN')) {
+            yield MenuItem::section('Gestion des utilisateurs', 'fa fa-users');
+            yield MenuItem::linkToRoute('Liste des utilisateurs', 'fas fa-list', 'user_index');
+        }
     }
 }

@@ -1,0 +1,52 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block icons %}
+
+<link rel="icon" type="image/png" href="/path/to/favicon.png">
+
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('/_asset/css/dashboard.css') }}">
+{% endblock %}
+
+{% block page_content %}
+  <div class="container-fluid">
+    <h1 class="text-primary mb-4">Mon Dashboard Futuriste</h1>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card border-primary mb-4">
+          <div class="card-header bg-primary text-white">
+            <h3 class="card-title">Statistique 1</h3>
+          </div>
+          <div class="card-body">
+            <p>Contenu de la statistique 1</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-success mb-4">
+          <div class="card-header bg-success text-white">
+            <h3 class="card-title">Statistique 2</h3>
+          </div>
+          <div class="card-body">
+            <p>Contenu de la statistique 2</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card border-secondary mb-4">
+          <div class="card-header bg-secondary text-white">
+            <h3 class="card-title">Statistique 3</h3>
+          </div>
+          <div class="card-body">
+            <p>Contenu de la statistique 3</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

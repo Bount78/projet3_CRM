@@ -32,6 +32,9 @@
 							<p class="border border-warning rounded p-2 text-center text-bg-warning ">Le mot de passe doit contenir au moins une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.</p>
 						</div>
 						<div class="mb-3">
+							{% if message is defined %}
+								<div class="alert">{{ message }}</div>
+							{% endif %}
 							{{ form_row(registrationForm.profileImage, {'attr': {'class': 'form-control'}}) }}
 						</div>
 						<div class="form-check mb-3">
