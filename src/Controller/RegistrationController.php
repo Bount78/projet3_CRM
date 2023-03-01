@@ -23,24 +23,20 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer l'objet UploadedFile
             $file = $form->get('profileImage')->getData();
-
-            // Récupérer le prénom de l'utilisateur
             $firstName = $form->get('firstName')->getData();
-
-            // Générer un nom de fichier unique
-            $fileName = $firstName . '_profile_' . uniqid() . '.' . $file->guessExtension();
-
-            // Déplacer le fichier vers le dossier de destination
-            $file->move(
-                $this->getParameter('profile_image_directory'),
-                $fileName
-            );
-
-            // Mettre à jour la propriété profileImage de l'utilisateur avec le nom de fichier
-            $user->setProfileImage($fileName);
-
+        
+            // Vérifier si un fichier a été téléchargé
+            if ($file) {
+                $fileName = $firstName . '_profile_' . uniqid() . '.' . $file->guessExtension();
+        
+                $file->move(
+                    $this->getParameter('profile_image_directory'),
+                    $fileName
+                );
+        
+                $user->setProfileImage($fileName);
+            }
             // Encode the plain password
             $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());
             $user->setPassword($hashedPassword);

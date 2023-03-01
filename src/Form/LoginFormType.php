@@ -3,11 +3,13 @@
 namespace App\Form;
 
 use App\Entity\User;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+
+
 
 class LoginFormType extends AbstractType
 {
@@ -25,8 +27,7 @@ class LoginFormType extends AbstractType
                 'attr'=>[
                     'placeholder'=> 'Entrez votre mot de passe...'
                 ]
-                ])
-        ;
+                ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

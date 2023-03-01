@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-    #[Route('/admin', name: 'admin')]
+    #[Route('/user', name: 'user')]
     public function index(): Response
     {
         // return parent::index();
@@ -36,7 +36,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Mon Dashboard personnalisé')
+            ->setTitle('Mon Dashboard Utilisateur personnalisé')
             ->setFaviconPath('/path/to/favicon.ico');
     }
 
