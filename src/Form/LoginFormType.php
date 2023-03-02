@@ -16,27 +16,28 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('email', EmailType::class, [
-            'label'=> 'Votre email : ',
-            'attr'=>[
-                'placeholder'=>'Entrez votre adresse mail...',
-                'name' => '_email'
-            ]
-        ])  
-        ->add('password', PasswordType::class, [
-            'label'=> 'Votre password : ',
-            'attr'=>[
-                'placeholder'=> 'Entrez votre mot de passe...',
-                'name' => '_password'
-            ]
-        ]);
+            ->add('email', EmailType::class, [
+                'label'=> 'Votre email : ',
+                'attr'=>[
+                    'placeholder'=>'Entrez votre adresse mail...',
+                    'name' => 'email'
+                ]
+            ])  
+            ->add('password', PasswordType::class, [
+                'label'=> 'Votre mot de passe : ',
+                'attr'=>[
+                    'placeholder'=> 'Entrez votre mot de passe...',
+                    'name' => 'password'
+                ]
+                ]);
     }
-        
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'method' => 'POST',
         ]);
     }
+    
 }

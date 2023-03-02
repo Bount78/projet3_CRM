@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Page connexion{% endblock %}
+{% block title %}Page connexion
+{% endblock %}
 
 {% block body %}
 	<form method="post">
@@ -13,6 +14,7 @@
 						</div>
 						<div class="card-body">
 							{{ form_start(form) }}
+								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 							<div class="mb-3">
 								{{ form_label(form.email, 'Email') }}
 								{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
@@ -26,8 +28,9 @@
 								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 							{% endif %}
 							{{ form_row(form._token) }}
-								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-							<button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Connexion'|trans }}</button>
+							{# {{ csrf_token('authenticate') }} #}
+							{# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> #}
+							<button class="btn btn-lg btn-primary btn-block" type="submit"> {{ 'Connexion'|trans }}</button>
 							{{ form_end(form) }}
 							{% if register_link is defined %}
 								<p>Pas encore inscrit ?
@@ -44,4 +47,3 @@
 		</div>
 	</form>
 {% endblock %}
-
