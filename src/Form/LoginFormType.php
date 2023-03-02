@@ -20,7 +20,7 @@ class LoginFormType extends AbstractType
             'label'=> 'Votre email : ',
             'attr'=>[
                 'placeholder'=>'Entrez votre adresse mail...',
-                'name' => '_username'
+                'name' => '_email'
             ]
         ])  
         ->add('password', PasswordType::class, [
