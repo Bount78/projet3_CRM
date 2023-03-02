@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
@@ -27,18 +26,22 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
-        $email = $request->request->get('email', '');
-        
-        $request->getSession()->set(Security::LAST_USERNAME, $email);
-        
+        $requestData = $request->request->all();
+        $email = $requestData['_username'] ?? '';
+        $password = $requestData['_password'] ?? '';
+
+        // dd($email);
+
         return new Passport(
             new UserBadge($email),
-            new PasswordCredentials($request->request->get('password', '')),
+            new PasswordCredentials($password),
             [
-                // new CsrfTokenBadge('authenticate', $request->request->get('_csrf_token')),
-                ]
-            );
-        }
+                // new CsrfTokenBadge('authenticate', $requestData['_csrf_token'] ?? ''),
+            ]
+        );
+    }
+    
+    
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): Response
     {

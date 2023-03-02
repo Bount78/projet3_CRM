@@ -1,49 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Log in!
+{% endblock %}
 
 {% block body %}
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
-    <form method="post">
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }},
-                <a href="{{ path('app_logout') }}">Logout</a>
-            </div>
-        {% endif %}
-        <div class="container mt-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h1 class="card-title">Log in !</h1>
-                        </div>
-                        <div class="card-body">
-                            {{ form_start(form) }}
-                            {{ form_row(form._token) }}
-                            {{ form_errors(form) }}
-                            <div class="mb-3">
-                                {{ form_label(form.email, 'Email') }}
-                                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
-                            </div>
-                            <div class="mb-3">
-                                {{ form_label(form.password, 'Mot de passe') }}
-                                {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
-                            </div>
-                            <button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Connexion'|trans }}</button>
-                            {{ form_end(form) }}
-                            {% if register_link is defined %}
-                                <p>Pas encore inscrit ? <a href="{{ register_link }}">S'inscrire</a></p>
-                            {% endif %}
-                            {% for message in app.flashes('success') %}
-                                <div class="alert alert-success">{{ message }}</div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+	<form method="post">
+		{# {% if app.user %}
+			<div class="mb-3">
+				You are logged in as
+				{{ app.user.userIdentifier }},
+				<a href="{{ path('app_logout') }}">Logout</a>
+			</div>
+		{% endif %} #}
+		<div class="container mt-5">
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							<h1 class="card-title">Log in !</h1>
+						</div>
+						<div class="card-body">
+							{{ form_start(form) }}
+							{# {{ form_row(form._token) }} #}
+							{# {{ form_errors(form) }} #}
+							<div class="mb-3">
+								{{ form_label(form.email, 'Email') }}
+								{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
+							</div>
+							<div class="mb-3">
+								{{ form_label(form.password, 'Mot de passe') }}
+								{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
+							</div>
+							{% if error %}
+								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
+							<button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Connexion'|trans }}</button>
+							{{ form_end(form) }}
+							{% if register_link is defined %}
+								<p>Pas encore inscrit ?
+									<a href="{{ register_link }}">S'inscrire</a>
+								</p>
+							{% endif %}
+							{% for message in app.flashes('success') %}
+								<div class="alert alert-success">{{ message }}</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 {% endblock %}
+
