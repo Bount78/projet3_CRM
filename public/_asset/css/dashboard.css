@@ -1,85 +1,12 @@
 :root {
-    --primary-color: #FFB6C1;
-    --secondary-color: #EDEDED;
-    --tertiary-color: #00BFFF;
+    --primary-color: #7CB342; /* Vert olive: pour évoquer la nature, la santé et la fraîcheur. */
+    --secondary-color: #64B5F6; /* Bleu clair : pour rappeler l'idée d'hygiène et de pureté. */
+    --accent-color: #424242; /* Gris anthracite : pour apporter une touche de sophistication et de sérieux à votre site. */
+    
   }
   
 
-/* Background colors */
-body {
-    background-color: #1a1a1a !important;
-}
-
-/* Text colors */
-body,
-.card-header,
-.card-title,
-.menu-item,
-.sidebar-brand,
-.sidebar-header {
-    color: #dcdcdc;
-}
-
-/* Sidebar */
-.sidebar {
-    background-color: #262626;
-}
-
-/* Navbar */
-.navbar {
-    background-color: #1a1a1a;
-}
-
-/* Menu items */
-.menu-item {
-    border-left: 3px solid #1a1a1a;
-    color: #dcdcdc;
-    font-weight: bold;
-    margin-bottom: 10px;
-    padding-left: 15px;
-}
-
-/* Active menu item */
-.menu-item.active {
-    background-color: #333333;
-    border-left: 3px solid #ffcc00;
-}
-
-/* Links */
-a {
-    color: #ffcc00;
-}
-
-/* Hover effect on links */
-a:hover {
-    color: #fff;
-    text-decoration: none;
-}
-
-/* Cards */
-.card {
-    background-color: #262626;
-    color: #dcdcdc;
-    margin-bottom: 30px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* Card Headers */
-.card-header {
-    background-color: #1a1a1a;
-    color: #dcdcdc;
-    padding: 15px;
-}
-
-/* Card Titles */
-.card-title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-/* Card Bodies */
-.card-body {
-    padding: 15px;
-}
+#calendar {
+    width: 80%;
+    margin: auto;
+  }

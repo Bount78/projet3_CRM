@@ -1,22 +1,12 @@
-{% extends '@EasyAdmin/page/content.html.twig' %}
-
-
-{% block icons %}
-
-<link rel="icon" type="image/png" href="/path/to/favicon.png">
-
-{% endblock %}
-
-
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('/_asset/css/dashboard.css') }}">
-{% endblock %}
+{% extends 'dashboard.html.twig' %}
 
 {% block page_content %}
+{% block card_user %}
+
   <div class="container-fluid">
     <h1 class="text-primary mb-4">Mon Dashboard Futuriste</h1>
-    <div class="row">
+    <div id="calendar"></div>
+    {# <div class="row">
       <div class="col-md-4">
         <div class="card border-primary mb-4">
           <div class="card-header bg-primary text-white">
@@ -47,6 +37,9 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> #}
   </div>
 {% endblock %}
+
+{% endblock %}
+

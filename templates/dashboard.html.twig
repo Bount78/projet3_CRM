@@ -1,0 +1,22 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+
+{% block head_favicon %}
+	<link rel="icon" type="image/png" href="{{ asset('images/logo/mask.svg') }}">
+{% endblock %}
+
+
+{% block head_stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('_asset/css/dashboard.css') }}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.4/main.min.css" integrity="sha256-EAq+X/hXd44MlSOCkm9hchPJT78vQ4UBTT7FBkQl9qE=" crossorigin="anonymous">
+{% endblock %}
+
+
+{% block page_content %}{% endblock %}
+
+{% block head_javascript %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js" integrity="sha256-z82jYOK/utiAteR0z6FjIOQmdWzvxqXJ6wsXbGJkBwY=" crossorigin="anonymous"></script>
+    <script src="{{ asset('_asset/js/calendar.js') }}"></script>
+{% endblock %}
+

@@ -62,7 +62,7 @@ class AppAuthAuthenticator extends AbstractLoginFormAuthenticator
         
         // dd($credentials['login_form']['_token']);
         if (!$request->getSession()->get('_csrf/secret') === $credentials['login_form']['_token']) {
-            throw new CustomUserMessageAuthenticationException('Invalid CSRF token!!!!!!!!!');
+            throw new CustomUserMessageAuthenticationException('Le  CSRF token fournit n\'est pas valide.');
         }
         
         
