@@ -19,7 +19,7 @@ class Calendar
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'calendars')]
-    private ?user $user_id = null;
+    private ?User $user_id = null;
 
     #[ORM\OneToMany(mappedBy: 'calendar_id', targetEntity: Event::class)]
     private Collection $events;
@@ -46,12 +46,12 @@ class Calendar
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(?user $user_id): self
+    public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
 

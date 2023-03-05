@@ -39,6 +39,8 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/event/add, roles: ROLE_USER }
+
 
 when@test:
     security:

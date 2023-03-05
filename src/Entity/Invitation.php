@@ -14,34 +14,34 @@ class Invitation
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'invitations')]
-    private ?event $event_id = null;
+    private ?Event $event_id = null;
 
     #[ORM\ManyToOne(inversedBy: 'invitations')]
-    private ?contact $contactId = null;
+    private ?Contact $contactId = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getEventId(): ?event
+    public function getEventId(): ?Event
     {
         return $this->event_id;
     }
 
-    public function setEventId(?event $event_id): self
+    public function setEventId(?Event $event_id): self
     {
         $this->event_id = $event_id;
 
         return $this;
     }
 
-    public function getContactId(): ?contact
+    public function getContactId(): ?Contact
     {
         return $this->contactId;
     }
 
-    public function setContactId(?contact $contactId): self
+    public function setContactId(?Contact $contactId): self
     {
         $this->contactId = $contactId;
 

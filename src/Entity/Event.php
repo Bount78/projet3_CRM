@@ -19,19 +19,22 @@ class Event
     private ?string $name = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $dateStart = null;
+    private ?\DateTime $dateStart = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $dateEnd = null;
+    private ?\DateTime $dateEnd = null;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?User $user_id = null;
+    
 
     #[ORM\ManyToOne(inversedBy: 'events')]
-    private ?user $user_id = null;
-
-    #[ORM\ManyToOne(inversedBy: 'events')]
-    private ?calendar $calendar_id = null;
+    private ?Calendar $calendar_id = null;
 
     #[ORM\OneToMany(mappedBy: 'event_id', targetEntity: Invitation::class)]
     private Collection $invitations;
+
 
     public function __construct()
     {
@@ -55,48 +58,48 @@ class Event
         return $this;
     }
 
-    public function getDateStart(): ?\DateTimeImmutable
+    public function getDateStart(): ?\DateTime
     {
         return $this->dateStart;
     }
 
-    public function setDateStart(\DateTimeImmutable $dateStart): self
+    public function setDateStart(\DateTime $dateStart): self
     {
         $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeImmutable
+    public function getDateEnd(): ?\DateTime
     {
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeImmutable $dateEnd): self
+    public function setDateEnd(\DateTime $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(?user $user_id): self
+    public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
 
         return $this;
     }
 
-    public function getCalendarId(): ?calendar
+    public function getCalendarId(): ?Calendar
     {
         return $this->calendar_id;
     }
 
-    public function setCalendarId(?calendar $calendar_id): self
+    public function setCalendarId(?Calendar $calendar_id): self
     {
         $this->calendar_id = $calendar_id;
 
@@ -132,4 +135,5 @@ class Event
 
         return $this;
     }
+
 }
