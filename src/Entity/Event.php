@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\EventRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EventRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
@@ -17,15 +20,20 @@ class Event
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+    
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\GreaterThan(value: "today midnight")]
     private ?\DateTime $dateStart = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\GreaterThan(propertyPath: "dateStart")]
     private ?\DateTime $dateEnd = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user_id = null;
     
 

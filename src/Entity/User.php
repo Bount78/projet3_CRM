@@ -62,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Consent::class, cascade: ["persist"])]
     private Collection $consents;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $events;
 
     public function __construct()

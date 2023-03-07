@@ -1,13 +1,96 @@
 {% extends 'dashboard.html.twig' %}
 
 {% block page_content %}
-{% block card_user %}
+	{% block card_user %}
 
-	<div class="container-fluid">
-		<h1 class="text-primary mb-4">Mon Dashboard Futuriste</h1>
-		<div class="container">
-			<div id="calendar"></div>
-		</div>
+		<div class="container-fluid">
+			<h1 class="text-primary mb-4">Mon Dashboard Futuriste</h1>
+			{% if app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ app.flashes('success')[0] }}
+				</div>
+			{% endif %}
+
+			<div class="container">
+				<div id="calendar"></div>
+			</div>
+
+			{# Bloc pour ajouter un événement  #}
+
+			<div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true" style="display:none;">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="addEventModalLabel">Ajouter un événement</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="addEventForm" action="/event" method="POST">
+								<div class="mb-3">
+									<label for="eventName" class="form-label">Nom de l'événement</label>
+									<input type="text" class="form-control" id="eventName" name="eventName">
+								</div>
+								<div class="mb-3">
+									<label for="eventStart" class="form-label">Date et heure de début</label>
+									<input type="datetime-local" class="form-control" id="eventStart" name="eventStart">
+								</div>
+								<div class="mb-3">
+									<label for="eventEnd" class="form-label">Date et heure de fin</label>
+									<input type="datetime-local" class="form-control" id="eventEnd" name="eventEnd">
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+							<button type="button" class="btn btn-primary" id="addEventButton">Ajouter</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{# Fin de bloc pour ajouter un événement  #}
+
+			{# Bloc modifier un événement  #}
+
+
+			<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="editEventModalLabel">Modifier l'événement</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="editEventForm" action="/event/edit" method="PUT">
+								<input type="hidden" id="eventId" name="eventId">
+								<div class="mb-3">
+									<label for="searchEvent" class="form-label">Rechercher un événement</label>
+									<input type="text" class="form-control" id="searchEvent" name="searchEvent">
+									<button type="button" class="btn btn-primary" id="searchEventButton">Rechercher</button>
+								</div>
+								<div class="mb-3">
+									<label for="eventName" class="form-label">Nom de l'événement</label>
+									<input type="text" class="form-control" id="eventName" name="eventName" required>
+								</div>
+								<div class="mb-3">
+									<label for="eventStart" class="form-label">Date de début</label>
+									<input type="datetime-local" class="form-control" id="eventStart" name="eventStart" required>
+								</div>
+								<div class="mb-3">
+									<label for="eventEnd" class="form-label">Date de fin</label>
+									<input type="datetime-local" class="form-control" id="eventEnd" name="eventEnd" required>
+								</div>
+								<button type="submit" class="btn btn-primary" id="editEventButton">Modifier</button>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			{# Fin de bloc pour amofifier un événement  #}
+
+		{% endblock %}
+
 	{% endblock %}
-
-{% endblock %}

@@ -1,3 +1,8 @@
+import addCustomButtons from './components/customButtons.js';
+import loadEvents from './components/events.js';
+import handleAddEvent from './components/addEvents.js';
+import handleEditEvent from './components/editEvents.js';
+
 export default class MyCalendar {
   constructor() {
     var calendarEl = document.getElementById('calendar');
@@ -22,33 +27,20 @@ export default class MyCalendar {
       dayMaxEvents: true,
       eventTimeFormat: { hour: 'numeric', minute: '2-digit', hour12: false }
     });
-    calendar.setOption('customButtons', {
-      addEventButton: {
-        text: 'Ajouter un événement',
-        icon: 'bi bi-plus-circle',
-        click: function () {
-          // Déclencher une requête AJAX pour récupérer le formulaire à afficher dans le modal
-          $.post($(this).data('route'), function (data) {
-            // Injecter le contenu du formulaire dans le modal
-            $('#addEventModal .modal-content').html(data);
-            // console.log(data)
-            // Afficher le modal
-            $('#addEventModal').modal('show');
-          });
-        },
-        data: {
-          route: "/app_event_add",
-        }
-      }
-    });
+
+    addCustomButtons(calendar);
+    loadEvents(calendar);
 
     calendar.setOption('headerToolbar', {
       start: 'prev,next today',
       center: 'title',
-      end: 'addEventButton dayGridMonth,timeGridWeek,timeGridDay,listDay'
+      end: 'addEventButton,editEventButton,deleteEventButton dayGridMonth,timeGridWeek,timeGridDay,listDay'
     });
-
+ 
+    handleAddEvent(calendar);
+    handleEditEvent(calendar);
 
     this.calendar = calendar;
+
   }
 }
