@@ -34,7 +34,7 @@ class Event
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private ?User $user_id = null;
+    private ?User $user = null;
     
 
     #[ORM\ManyToOne(inversedBy: 'events')]
@@ -92,12 +92,12 @@ class Event
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     public function setUserId(?User $user_id): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }

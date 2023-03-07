@@ -29,9 +29,13 @@ class Consent
      
     private $date_consenti;
 
-    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'consents')]
-    #[ORM\JoinColumn(nullable: false)]
-    private $userId;
+     #[ORM\Column(name: 'user_id')]
+     
+    private ?int $userId;
+
+    #[ORM\ManyToOne(targetEntity:User::class, inversedBy: 'consents')]
+    #[ORM\JoinColumn(name : 'user_id', referencedColumnName: 'id')]
+    private ?User $user = null;
 
     public function __toString(): string
     {
@@ -92,15 +96,26 @@ class Consent
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+        $this->userId = $user ? $user->getId() : null;
+        return $this;
+    }
+
+    public function getUserId(): ?int
     {
         return $this->userId;
     }
 
-    public function setUserId(?user $userId): self
+    public function setUserId(int $userId): self
     {
         $this->userId = $userId;
-
         return $this;
     }
 }

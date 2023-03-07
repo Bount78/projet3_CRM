@@ -59,17 +59,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = null;
 
-    #[ORM\OneToMany(mappedBy: 'userId', targetEntity: Consent::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Consent::class, cascade: ["persist"])]
     private Collection $consents;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $events;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Calendar::class)]
+    private Collection $calendars;
 
     public function __construct()
     {
         $this->consents = new ArrayCollection();
         $this->roles[] = 'ROLE_USER';
         $this->events = new ArrayCollection();
+        $this->calendars = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -236,6 +240,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($event->getUserId() === $this) {
                 $event->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+      /**
+     * @return Collection|Calendar[]
+     */
+    public function getCalendars(): Collection
+    {
+        return $this->calendars;
+    }
+
+    public function addCalendar(Calendar $calendar): self
+    {
+        if (!$this->calendars->contains($calendar)) {
+            $this->calendars[] = $calendar;
+            $calendar->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalendar(Calendar $calendar): self
+    {
+        if ($this->calendars->removeElement($calendar)) {
+            // set the owning side to null (unless already changed)
+            if ($calendar->getUserId() === $this) {
+                $calendar->setUserId(null);
             }
         }
 

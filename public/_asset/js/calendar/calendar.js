@@ -2,6 +2,7 @@ import addCustomButtons from './components/customButtons.js';
 import loadEvents from './components/events.js';
 import handleAddEvent from './components/addEvents.js';
 import handleEditEvent from './components/editEvents.js';
+// import handlesearchTerm from './components/searchEvents.js';
 
 export default class MyCalendar {
   constructor() {
@@ -39,6 +40,7 @@ export default class MyCalendar {
  
     handleAddEvent(calendar);
     handleEditEvent(calendar);
+    // handlesearchTerm(calendar);
 
     this.calendar = calendar;
 

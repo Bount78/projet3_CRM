@@ -18,11 +18,15 @@ class Calendar
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'calendars')]
-    private ?User $user_id = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'calendars')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    private User $user;
+    
 
     #[ORM\OneToMany(mappedBy: 'calendar_id', targetEntity: Event::class)]
     private Collection $events;
+
+    
 
     public function __construct()
     {
@@ -48,12 +52,12 @@ class Calendar
 
     public function getUserId(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     public function setUserId(?User $user_id): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user_id;
 
         return $this;
     }

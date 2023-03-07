@@ -1,5 +1,5 @@
 import MyCalendar from './calendar/calendar.js';
-import searchEvent from './calendar/components/searchEvents.js';
+// import searchEvent from './calendar/components/searchEvents.js';
 
 
 
@@ -8,6 +8,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   calendar.calendar.render();
-  const searchEventButton = document.getElementById('searchEventButton');
-  searchEventButton.addEventListener('click', searchEvent);
 });

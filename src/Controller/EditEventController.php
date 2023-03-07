@@ -61,18 +61,22 @@ class EditEventController extends AbstractController
     public function searchEvent(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): JsonResponse
     {
         // Récupérer la chaîne de recherche
-        $searchQuery = $request->request->get('searchTerm');
+        $data = json_decode($request->getContent(), true);
+        $searchQuery = $data['searchTerm'] ?? null;
+        
 
         // Trouver l'événement en base de données
-        $user_id = $tokenStorage->getToken()->getUser();
+        $user_id = $tokenStorage->getToken()->getUser()->getId();
         $eventRepository = $entityManager->getRepository(Event::class);
-
+        var_dump($searchQuery);
+        // var_dump($user_id);
+        
         try {
             $event = $eventRepository->findOneBy([
                 'name' => $searchQuery,
                 'user' => $user_id
             ]);
-            
+            // dd($event);
             if (!$event) {
                 return new JsonResponse(['success' => false, 'error' => 'No event found']);
             }
