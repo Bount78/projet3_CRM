@@ -11,3 +11,9 @@ edit_event:
     path: /event/edit
     controller: App\Controller\EditEventController::editEvent
     methods: [PUT]
+
+update_event:
+    path: '/event/edit/{eventId}'
+    controller: 'App\Controller\EditEventController::updateEvent'
+    methods: ['PUT']
+
