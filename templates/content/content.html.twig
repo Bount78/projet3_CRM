@@ -4,7 +4,7 @@
 	{% block card_user %}
 
 		<div class="container-fluid">
-			<h1 class="text-primary mb-4">Mon Dashboard Futuriste</h1>
+			<h1 class=" big-title mb-4">Mon Dashboard Futuriste</h1>
 			{% if app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ app.flashes('success')[0] }}
@@ -16,7 +16,6 @@
 			</div>
 
 			{# Bloc pour ajouter un événement  #}
-
 			<div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true" style="display:none;">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -47,12 +46,9 @@
 					</div>
 				</div>
 			</div>
-
 			{# Fin de bloc pour ajouter un événement  #}
 
 			{# Bloc modifier un événement  #}
-
-
 			<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -103,8 +99,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			{# Fin de bloc pour mofifier un événement  #}
 
 			{#  bloc pour suppression un événement  #}
@@ -158,8 +152,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			{#  Fin de bloc pour suppression un événement  #}
 
 		{% endblock %}

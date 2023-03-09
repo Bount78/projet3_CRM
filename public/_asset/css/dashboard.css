@@ -1,12 +1,99 @@
 :root {
-    --primary-color: #7CB342; /* Vert olive: pour évoquer la nature, la santé et la fraîcheur. */
-    --secondary-color: #64B5F6; /* Bleu clair : pour rappeler l'idée d'hygiène et de pureté. */
-    --accent-color: #424242; /* Gris anthracite : pour apporter une touche de sophistication et de sérieux à votre site. */
-    
+  /* CSS HEX */
+  --secondary-typo: #707070;
+  --primary-typo: #333333;
+  --primary-color: #4d4dff;
+  --secondary-color: #52c41a;
+  --background: #f8f4e3;
+
+  --bs-primary: #90f1efff;
+  --bs-success: #c1fba4ff;
+  --bs-warning: #ffef9fff;
+  --bs-danger: #ffd6e0ff;
+}
+
+
+/*
+
+  Utilisez la couleur principale avec parcimonie pour qu'elle attire l'attention 
+  sur les éléments les plus importants de votre site, comme les boutons d'action.
+  
+  Utilisez la couleur secondaire pour apporter de la variété et créer des contrastes.
+  Par exemple, vous pouvez l'utiliser pour les titres, les liens ou les icônes.
+  
+  Utilisez la couleur de fond pour créer une ambiance générale sur votre site.
+  Cette couleur doit être neutre et discrète pour ne pas distraire l'attention de vos
+  utilisateurs, mais suffisamment chaleureuse pour créer une ambiance accueillante.
+  
+  Utilisez les couleurs de la typographie pour rendre votre contenu facilement lisible
+  et agréable à lire. Le gris foncé pour les titres et le gris clair pour le corps de texte
+  sont des choix populaires et efficaces.
+  
+  Assurez-vous d'utiliser des couleurs cohérentes sur l'ensemble de votre
+  site pour renforcer votre image de marque et rendre votre site plus esthétique et
+  facile à utiliser.
+  
+  Enfin, n'oubliez pas que la typographie, les images et la mise en page
+  peuvent également contribuer à l'harmonie générale de votre site.
+  Pensez à utiliser une typographie cohérente et à choisir des images qui
+  correspondent à votre palette de couleurs et à votre branding.
+
+  */
+  
+ h1 {
+    color: var(--primary-typo); 
   }
   
-
 #calendar {
-    width: 100%;
-    margin: auto;
-  }
+  width: 100%;
+  margin: auto;
+}
+
+
+
+.fc-dayGridMonth-view {
+  border-color: var(--primary-color);
+  border-width: 2px;
+}
+
+/* Changer la couleur de fond de la vue "timeGridWeek" */
+.fc-timeGridWeek-view {
+  background-color: var(--background);
+  border-width: 2px;
+}
+
+/* Changer la couleur de fond des événements */
+.fc-event {
+  background-color: var(--secondary-color);
+}
+
+/* Changer la couleur de fond des cases de jour */
+.fc-day {
+  background-color: var(--background);
+  border-width: 2px;
+}
+
+/* Changer la couleur de la bordure des cases de jour */
+.fc-day {
+  border-color: var(--primary-color);
+  border-width: 2px;
+}
+
+/* Changer la couleur de la bordure des en-têtes de jour */
+.fc-day-header {
+  border-color: var(--primary-color);
+  border-width: 2px;
+}
+
+/* Changer la couleur des boutons du header */
+.fc button {
+  background-color: var(--primary-color);
+  color: #effaec;
+  border-color: var(--primary-color);
+}
+
+/* Changer la couleur des boutons du header lorsqu'ils sont survolés */
+.fc button:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}

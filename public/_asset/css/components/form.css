@@ -1,11 +1,61 @@
-form ul li{
-    color: rgb(238, 78, 78);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
+.glassmorphism {
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Personnalisation des styles de Bootstrap */
+
+/* Couleur de fond des cartes */
+.card {
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
 }
 
-form ul {
-    list-style: none;
-    background-color: rgba(101, 125, 161, 0.322);
-    border-radius: 5px;
+/* Couleur de fond des formulaires */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    border: none;
+    border-radius: 0.5rem;
+}
+
+/* Styles des boutons */
+.btn-primary {
+    background-color: rgba(89, 228, 221, 0.8);
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover {
+    background-color: rgba(102, 243, 126, 0.9);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:focus {
+    box-shadow: none;
+}
+
+/* Texte */
+h1, h2, h3, h4, h5, h6,
+.card-title {
+    color: #fff;
+    text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+}
+
+/* Personnalisation de votre code */
+.card-body {
+    padding: 2rem;
+}
+
+.form-label {
+    color: #fff;
+}
+
+.form-control:focus {
+    box-shadow: none;
 }

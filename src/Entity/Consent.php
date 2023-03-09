@@ -34,8 +34,9 @@ class Consent
     private ?int $userId;
 
     #[ORM\ManyToOne(targetEntity:User::class, inversedBy: 'consents')]
-    #[ORM\JoinColumn(name : 'user_id', referencedColumnName: 'id')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
+    
 
     public function __toString(): string
     {

@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ContactRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ContactRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
@@ -30,6 +31,7 @@ class Contact
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Choice(choices: ['collaborateur', 'client', 'prestataire', 'fournisseur'])]
     private ?string $type_contact = null;
 
     #[ORM\ManyToOne(inversedBy: 'contacts')]
@@ -37,6 +39,10 @@ class Contact
 
     #[ORM\OneToMany(mappedBy: 'contactId', targetEntity: Invitation::class)]
     private Collection $invitations;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contacts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -146,6 +152,26 @@ class Contact
                 $invitation->setContactId(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of user
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set the value of user
+     *
+     * @return  self
+     */ 
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }

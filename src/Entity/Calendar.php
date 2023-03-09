@@ -22,11 +22,8 @@ class Calendar
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private User $user;
     
-
-    #[ORM\OneToMany(mappedBy: 'calendar_id', targetEntity: Event::class)]
+    #[ORM\OneToMany(mappedBy: 'calendar', targetEntity: Event::class)]
     private Collection $events;
-
-    
 
     public function __construct()
     {
@@ -50,14 +47,14 @@ class Calendar
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user = $user_id;
+        $this->user = $user;
 
         return $this;
     }
@@ -74,7 +71,7 @@ class Calendar
     {
         if (!$this->events->contains($event)) {
             $this->events->add($event);
-            $event->setCalendarId($this);
+            $event->setCalendar($this);
         }
 
         return $this;
@@ -84,8 +81,8 @@ class Calendar
     {
         if ($this->events->removeElement($event)) {
             // set the owning side to null (unless already changed)
-            if ($event->getCalendarId() === $this) {
-                $event->setCalendarId(null);
+            if ($event->getCalendar() === $this) {
+                $event->setCalendar(null);
             }
         }
 

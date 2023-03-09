@@ -8,8 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
-
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 class Event
 {
@@ -20,7 +18,6 @@ class Event
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
-    
 
     #[ORM\Column]
     #[Assert\NotNull]
@@ -35,14 +32,12 @@ class Event
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
-    
 
     #[ORM\ManyToOne(inversedBy: 'events')]
     private ?Calendar $calendar_id = null;
 
-    #[ORM\OneToMany(mappedBy: 'event_id', targetEntity: Invitation::class)]
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: Invitation::class)]
     private Collection $invitations;
-
 
     public function __construct()
     {
@@ -90,26 +85,26 @@ class Event
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user = $user_id;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getCalendarId(): ?Calendar
+    public function getCalendar(): ?Calendar
     {
         return $this->calendar_id;
     }
 
-    public function setCalendarId(?Calendar $calendar_id): self
+    public function setCalendar(?Calendar $calendar): self
     {
-        $this->calendar_id = $calendar_id;
+        $this->calendar_id = $calendar;
 
         return $this;
     }
@@ -143,5 +138,4 @@ class Event
 
         return $this;
     }
-
 }

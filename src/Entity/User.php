@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity('email', message : 'Cette adresse mail est déjà utilisée.')]
+#[UniqueEntity('email', message: 'Cette adresse mail est déjà utilisée.')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -24,8 +24,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]
-    #[Assert\NotBlank(message : 'Vous devez rentrer une adresse mail.')]
-    #[Assert\Email(message:'Veuillez me donner une adresse mail valide.')]
+    #[Assert\NotBlank(message: 'Vous devez rentrer une adresse mail.')]
+    #[Assert\Email(message: 'Veuillez me donner une adresse mail valide.')]
     private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
@@ -35,15 +35,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column(type: 'string')]
-    #[Assert\NotBlank(message : 'Le mot de passe ne peut pas être vide.')]
-    #[Assert\Length(min: 12, max: 255, 
-    minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.', 
-    maxMessage: 'Le mot de passe ne peut pas dépasser {{ limit }} caractères.')]
+    #[Assert\NotBlank(message: 'Le mot de passe ne peut pas être vide.')]
+    #[Assert\Length(
+        min: 12,
+        max: 255,
+        minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
+        maxMessage: 'Le mot de passe ne peut pas dépasser {{ limit }} caractères.'
+    )]
     #[Assert\Regex(
         pattern: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-_=+{};:,<.>�?~])/x',
         message: 'Veuillez relire les conditions correctes de création de  mot de passe.'
     )]
-    #[Assert\IdenticalTo(propertyPath: "password", 
+    #[Assert\IdenticalTo(
+        propertyPath: "password",
         message: 'Les mots de passe ne correspondent pas.'
     )]
     private ?string $password = null;
@@ -53,13 +57,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $firstName = null;
 
     #[ORM\Column(type: 'string', length: 200)]
-    #[Assert\NotBlank(message:'Le nom ne peut pas être vide.')]
+    #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
     private ?string $lastName = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Consent::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Consent::class, cascade: ["persist"])]
     private Collection $consents;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
@@ -67,6 +71,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Calendar::class)]
     private Collection $calendars;
+
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Contact::class)]
+    private Collection $contacts;
+
 
     public function __construct()
     {
@@ -80,7 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-    
+
 
     public function getEmail(): ?string
     {
@@ -123,7 +131,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+
 
     /**
      * @see PasswordAuthenticatedUserInterface
@@ -132,7 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->password;
     }
-    
+
 
     public function setPassword(string $password): self
     {
@@ -198,24 +206,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->consents->contains($consent)) {
             $this->consents[] = $consent;
-            $consent->setUserId($this);
+             $consent->setUserId($this->getId());
         }
-    
+
         return $this;
     }
-    
+
 
     public function removeConsent(Consent $consent): self
     {
         if ($this->consents->removeElement($consent)) {
             // set the owning side to null (unless already changed)
             if ($consent->getUserId() === $this) {
-                $consent->setUserId(null);
+                $userId = $consent->getUserId() ? $consent->getUserId() : null;
+                $consent->setUserId($userId);
             }
         }
-
+    
         return $this;
     }
+    
 
     /**
      * @return Collection<int, Event>
@@ -247,7 +257,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-      /**
+    /**
      * @return Collection|Calendar[]
      */
     public function getCalendars(): Collection
@@ -277,5 +287,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts[] = $contact;
+            $contact->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the value of contacts
+     */ 
+    public function getContacts()
+    {
+        return $this->contacts;
+    }
+
+    /**
+     * Set the value of contacts
+     *
+     * @return  self
+     */ 
+    public function setContacts($contacts)
+    {
+        $this->contacts = $contacts;
+
+        return $this;
+    }
 }

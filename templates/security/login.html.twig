@@ -4,17 +4,16 @@
 {% endblock %}
 
 {% block body %}
-	<form method="post">
-		<div class="container mt-5">
-			<div class="row justify-content-center">
-				<div class="col-md-6">
-					<div class="card">
-						<div class="card-header">
-							<h1 class="card-title">Connexion</h1>
-						</div>
-						<div class="card-body">
-							{{ form_start(form) }}
-								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+	<div class="container-fluid" style="height: 100vh;">
+		<div class="row align-items-center justify-content-center" style="height: 100%;">
+			<div class="col-12 col-md-6">
+				<div class="card">
+					<div class="card-header">
+						<h1 class="card-title">Connexion</h1>
+					</div>
+					<div class="card-body bg-light p-5 rounded-3 shadow-lg glassmorphism">
+						<form method="post">
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 							<div class="mb-3">
 								{{ form_label(form.email, 'Email') }}
 								{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre adresse mail...'}}) }}
@@ -22,15 +21,12 @@
 							<div class="mb-3">
 								{{ form_label(form.password, 'Mot de passe') }}
 								{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': 'Votre mot de passe...'}}) }}
-
 							</div>
 							{% if error %}
 								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 							{% endif %}
 							{{ form_row(form._token) }}
-							{# {{ csrf_token('authenticate') }} #}
-							{# <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"> #}
-							<button class="btn btn-lg btn-primary btn-block" type="submit"> {{ 'Connexion'|trans }}</button>
+							<button class="btn btn-lg btn-primary btn-block" type="submit">{{ 'Connexion'|trans }}</button>
 							{{ form_end(form) }}
 							{% if register_link is defined %}
 								<p>Pas encore inscrit ?
@@ -40,10 +36,11 @@
 							{% for message in app.flashes('success') %}
 								<div class="alert alert-success">{{ message }}</div>
 							{% endfor %}
-						</div>
+						</form>
 					</div>
+
 				</div>
 			</div>
 		</div>
-	</form>
+	</div>
 {% endblock %}
