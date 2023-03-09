@@ -61,7 +61,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
-							<form id="editEventForm" action="/event/edit" method="PUT" >
+							<form id="editEventForm" action="/event/edit" method="PUT">
 								<input type="hidden" id="eventId" name="eventId" value="">
 								<div class="mb-3">
 									<label for="searchEvent" class="form-label">Rechercher un événement</label>
@@ -105,7 +105,62 @@
 			</div>
 
 
-			{# Fin de bloc pour amofifier un événement  #}
+			{# Fin de bloc pour mofifier un événement  #}
+
+			{#  bloc pour suppression un événement  #}
+			<div class="modal fade" id="deleteEventModal" tabindex="-1" aria-labelledby="deleteEventModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="deleteEventModalLabel">Supprimer l'événement</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="deleteEventForm" action="/event/delete" method="DELETE">
+								<input type="hidden" id="eventId" name="eventId" value="">
+								<div class="mb-3">
+									<label for="searchDeleteEvent" class="form-label">Rechercher un événement</label>
+									<input type="text" class="form-control" id="searchDeleteEvent" name="searchDeleteEvent">
+									<button type="button" class="btn btn-primary" id="searchDeleteEventButton">Rechercher</button>
+								</div>
+								<div class="mb-3">
+									<label for="eventName" class="form-label">Nom de l'événement</label>
+									<input type="text" class="form-control" id="eventDeleteName" name="eventName" value="" disabled>
+								</div>
+								<div class="mb-3">
+									<label for="eventStart" class="form-label">Date de début</label>
+									<input type="datetime-local" class="form-control" id="eventDeleteStart" name="eventStart" value="" disabled>
+								</div>
+								<div class="mb-3">
+									<label for="eventEnd" class="form-label">Date de fin</label>
+									<input type="datetime-local" class="form-control" id="eventDeleteEnd" name="eventEnd" value="" disabled>
+								</div>
+								<button type="submit" class="btn btn-danger" id="deleteEventButton">Supprimer</button>
+							</form>
+							<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title" id="deleteConfirmationModalLabel">Confirmer la suppression</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											Êtes-vous sûr de vouloir supprimer l'événement ?
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+											<button type="button" class="btn btn-danger" id="confirmDeleteButton">Supprimer</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			{#  Fin de bloc pour suppression un événement  #}
 
 		{% endblock %}
 

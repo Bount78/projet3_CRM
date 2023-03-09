@@ -21,7 +21,7 @@ export default function addCustomButtons(calendar) {
           icon: 'bi bi-trash',
           click: function () {
             // supprimer l'événement sélectionné
-            alert('Événement supprimé !');
+            $('#deleteEventModal').modal('show');
           },
         },
       });

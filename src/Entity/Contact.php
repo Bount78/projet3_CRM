@@ -33,7 +33,7 @@ class Contact
     private ?string $type_contact = null;
 
     #[ORM\ManyToOne(inversedBy: 'contacts')]
-    private ?user $user_id = null;
+    private ?User $user_id = null;
 
     #[ORM\OneToMany(mappedBy: 'contactId', targetEntity: Invitation::class)]
     private Collection $invitations;
@@ -108,12 +108,12 @@ class Contact
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(?user $user_id): self
+    public function setUserId(?User $user_id): self
     {
         $this->user_id = $user_id;
 

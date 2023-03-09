@@ -70,8 +70,4 @@ export default function searchEvents(calendar) {
     const editEventForm = document.querySelector('#editEventForm');
     editEventForm.style.display = 'block';
   });
-  
-  
-  
-
 }

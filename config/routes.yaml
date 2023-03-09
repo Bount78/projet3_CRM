@@ -17,3 +17,7 @@ update_event:
     controller: 'App\Controller\EditEventController::updateEvent'
     methods: ['PUT']
 
+liste_contacts:
+    path: '/user/liste_contacts'
+    controller: App\Controller\ListeContactController::index
+
