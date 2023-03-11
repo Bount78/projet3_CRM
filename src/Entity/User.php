@@ -63,31 +63,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = null;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Consent::class, cascade: ["persist"])]
-    private Collection $consents;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Event::class)]
     private Collection $events;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Calendar::class)]
-    private Collection $calendars;
 
-    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Contact::class)]
-    private Collection $contacts;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Consent::class)]
+    private Collection $consents;
+
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: "user_contact")]
+    private Collection $user_contact;
+
+    
+
 
 
     public function __construct()
     {
-        $this->consents = new ArrayCollection();
         $this->roles[] = 'ROLE_USER';
         $this->events = new ArrayCollection();
-        $this->calendars = new ArrayCollection();
+        $this->consents = new ArrayCollection();
+        $this->user_contact = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+    
 
 
     public function getEmail(): ?string
@@ -194,38 +198,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Consent>
-     */
-    public function getConsents(): Collection
-    {
-        return $this->consents;
-    }
-
-    public function addConsent(Consent $consent): self
-    {
-        if (!$this->consents->contains($consent)) {
-            $this->consents[] = $consent;
-             $consent->setUserId($this->getId());
-        }
-
-        return $this;
-    }
 
 
-    public function removeConsent(Consent $consent): self
-    {
-        if ($this->consents->removeElement($consent)) {
-            // set the owning side to null (unless already changed)
-            if ($consent->getUserId() === $this) {
-                $userId = $consent->getUserId() ? $consent->getUserId() : null;
-                $consent->setUserId($userId);
-            }
-        }
-    
-        return $this;
-    }
-    
 
     /**
      * @return Collection<int, Event>
@@ -257,62 +231,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
+
     /**
-     * @return Collection|Calendar[]
+     * @return Collection<int, Consent>
      */
-    public function getCalendars(): Collection
+
+    public function getConsents()
     {
-        return $this->calendars;
+        return $this->consents;
     }
 
-    public function addCalendar(Calendar $calendar): self
+    /**
+     * Set the value of consents
+     *
+     * @return  self
+     */
+    public function setConsents($consents)
     {
-        if (!$this->calendars->contains($calendar)) {
-            $this->calendars[] = $calendar;
-            $calendar->setUserId($this);
-        }
+        $this->consents = $consents;
 
         return $this;
     }
 
-    public function removeCalendar(Calendar $calendar): self
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getUserContact(): Collection
     {
-        if ($this->calendars->removeElement($calendar)) {
-            // set the owning side to null (unless already changed)
-            if ($calendar->getUserId() === $this) {
-                $calendar->setUserId(null);
-            }
-        }
-
-        return $this;
+        return $this->user_contact;
     }
 
     public function addContact(Contact $contact): self
     {
-        if (!$this->contacts->contains($contact)) {
-            $this->contacts[] = $contact;
-            $contact->setUserId($this);
+        if (!$this->user_contact->contains($contact)) {
+            $this->user_contact->add($contact);
+            $contact->addUser($this);
         }
 
         return $this;
     }
 
-    /**
-     * Get the value of contacts
-     */ 
-    public function getContacts()
+    public function getContacts(): Collection
     {
-        return $this->contacts;
+        return $this->user_contact;
     }
 
-    /**
-     * Set the value of contacts
-     *
-     * @return  self
-     */ 
-    public function setContacts($contacts)
+
+
+    public function removeContact(Contact $contact): self
     {
-        $this->contacts = $contacts;
+        if ($this->user_contact->removeElement($contact)) {
+            $contact->removeUser($this);
+        }
 
         return $this;
     }

@@ -93,36 +93,28 @@ class RegistrationFormType extends AbstractType
 
 
 
-        $builder->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-
-                if (!$form->isValid()) {
-                    return;
+            $builder->addEventListener(
+                FormEvents::POST_SUBMIT,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+    
+                    if (!$form->isValid()) {
+                        return;
+                    }
+    
+                    $user = $event->getData();
+    
+                    if ($form->get('consent')->getData()) {
+                        $consent = new Consent();
+                        $consent->setUser($user);
+                        $consent->setAccept(true);
+                        $consent->setDateConsenti(new \DateTimeImmutable());
+                        $this->entityManager->persist($consent);
+                    }
+    
+                    $this->entityManager->persist($user);
+                    $this->entityManager->flush();
                 }
-                $user = $event->getData();
-
-                if ($form->get('consent')->getData()) {
-                    $consent = new Consent();
-                    $consent->setUserId($user);
-                    $consent->setAccept(true);
-                    $consent->setDateConsenti(new \DateTimeImmutable());
-                    $this->entityManager->persist($consent);
-                }
-                $this->entityManager->persist($user);
-                $this->entityManager->flush();
-            }
-        );
-        
+            );
+        }
     }
-
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-            // 'csrf_protection' => true,
-        ]);
-    }
-}

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ConsentRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConsentRepository::class)]
@@ -11,52 +10,38 @@ class Consent
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-
     #[ORM\Column(length: 255)]
-    private ?string $finalite = "accepte la polique de confidentialité.";
+    private ?string $finalite = "accepte la politique de confidentialité.";
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'boolean')]
     private ?bool $accept = false;
 
-    
-     #[ORM\Column(type: 'datetime', nullable: true, options: ['default' => 'CURRENT_TIMESTAMP'])]
-     
-    private $date_consenti;
+    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private ?\DateTimeInterface $date_consenti = null;
 
-     #[ORM\Column(name: 'user_id')]
-     
-    private ?int $userId;
-
-    #[ORM\ManyToOne(targetEntity:User::class, inversedBy: 'consents')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'consents')]
+    #[ORM\JoinColumn(name: 'user_id_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?User $user = null;
-    
-
-    public function __toString(): string
-    {
-        return (string) $this->getId();
-    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-
     public function getFinalite(): ?string
     {
         return $this->finalite;
     }
 
-    public function setFinalite(string $finalite): self
+    public function setFinalite(?string $finalite): self
     {
-        $this->finalite = $finalite;
+        $this->finalite = $finalite ?? "accepte la politique de confidentialité.";
 
         return $this;
     }
@@ -85,12 +70,12 @@ class Consent
         return $this;
     }
 
-    public function getDateConsenti(): ?\DateTimeImmutable
+    public function getDateConsenti(): ?\DateTimeInterface
     {
         return $this->date_consenti;
     }
 
-    public function setDateConsenti(\DateTimeImmutable $date_consenti): self
+    public function setDateConsenti(?\DateTimeInterface $date_consenti): self
     {
         $this->date_consenti = $date_consenti;
 
@@ -105,18 +90,7 @@ class Consent
     public function setUser(?User $user): self
     {
         $this->user = $user;
-        $this->userId = $user ? $user->getId() : null;
-        return $this;
-    }
 
-    public function getUserId(): ?int
-    {
-        return $this->userId;
-    }
-
-    public function setUserId(int $userId): self
-    {
-        $this->userId = $userId;
         return $this;
     }
 }

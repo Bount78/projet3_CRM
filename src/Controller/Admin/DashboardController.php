@@ -34,6 +34,7 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Contacts', 'fa fa-address-book');
         yield MenuItem::linkToRoute('Liste des contacts', 'fa fa-list', 'liste_contacts');
+        yield MenuItem::linkToRoute('Mes contacts', 'fa fa-list', 'app_contact_user');
         
 
         // Vérifie si l'utilisateur a le rôle "ROLE_ADMIN"

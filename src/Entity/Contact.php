@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+
+
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
@@ -34,19 +36,17 @@ class Contact
     #[Assert\Choice(choices: ['collaborateur', 'client', 'prestataire', 'fournisseur'])]
     private ?string $type_contact = null;
 
-    #[ORM\ManyToOne(inversedBy: 'contacts')]
-    private ?User $user_id = null;
 
     #[ORM\OneToMany(mappedBy: 'contactId', targetEntity: Invitation::class)]
     private Collection $invitations;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'contacts')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'user_contact')]
+    private Collection $users;
 
     public function __construct()
     {
         $this->invitations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,17 +114,6 @@ class Contact
         return $this;
     }
 
-    public function getUserId(): ?User
-    {
-        return $this->user_id;
-    }
-
-    public function setUserId(?User $user_id): self
-    {
-        $this->user_id = $user_id;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Invitation>
@@ -157,22 +146,34 @@ class Contact
     }
 
     /**
-     * Get the value of user
-     */ 
-    public function getUser()
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
-    /**
-     * Set the value of user
-     *
-     * @return  self
-     */ 
-    public function setUser($user)
+    public function addUser(User $user): self
     {
-        $this->user = $user;
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addContact($this);
+        }
+    
+        return $this;
+    }
+    
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeContact($this);
+        }
 
         return $this;
     }
+
+
 }
+
+

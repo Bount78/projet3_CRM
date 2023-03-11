@@ -1,5 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block page_title %}Dashboard de {{ app.user.lastname }}{% endblock %}
 
 {% block head_favicon %}
 	<link rel="icon" type="image/png" href="{{ asset('images/logo/mask.svg') }}">
@@ -8,12 +9,11 @@
 
 {% block head_stylesheets %}
 	{{ parent() }}
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.4/main.min.css" integrity="sha256-EAq+X/hXd44MlSOCkm9hchPJT78vQ4UBTT7FBkQl9qE=" crossorigin="anonymous">
 	<link rel="stylesheet" href="{{ asset('_asset/css/dashboard.css') }}">
 {% endblock  %}
-
 
 
 {% block page_content %}{% endblock %}
@@ -26,9 +26,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.4/main.min.js" integrity="sha256-Dfd6KUTo4z5AmFLv2yo91WxDAJyDtbZH3PPbf7o/kN4=" crossorigin="anonymous"></script>
 	<script type="module" src="{{ asset('_asset/js/app.js') }}"></script>
 	<script>
-			console.log('Bootstrap:', typeof bootstrap !== 'undefined');
-			console.log('jQuery:', typeof jQuery !== 'undefined');
-			console.log('FullCalendar:', typeof FullCalendar !== 'undefined');
+		console.log('Bootstrap:', typeof bootstrap !== 'undefined');
+console.log('jQuery:', typeof jQuery !== 'undefined');
+console.log('FullCalendar:', typeof FullCalendar !== 'undefined');
 	</script>
 
 {% endblock %}

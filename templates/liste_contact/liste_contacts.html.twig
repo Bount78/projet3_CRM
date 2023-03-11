@@ -20,6 +20,7 @@
 				<tbody>
 					{% for contact in contacts %}
 						<tr>
+							<td style="display:none">{{ contact.id }}</td>
 							<td>{{ contact.firstName }}
 								{{ contact.lastName }}</td>
 							<td>{{ contact.email }}</td>
@@ -38,9 +39,11 @@
 								{% endif %}
 							</td>
 							<td>
-								<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
-									Ajouter
-								</button>
+								<form id="addContactForm{{ contact.id }}" action="{{ path('add_contact', { userId: app.user.id, contactId: contact.id }) }}" method="POST">
+									<input type="hidden" name="contactId" value="{{ contact.id }}">
+									<input type="hidden" name="userId" value="{{ app.user.id }}">
+									<button type="submit" class="btn btn-primary add-contact-button">Ajouter le contact</button>
+								</form>
 								{% include 'liste_contact/modal_confirm_add.html.twig' with { contact: contact } %}
 							</td>
 						</tr>
@@ -48,6 +51,37 @@
 				</tbody>
 			</table>
 		</div>
+		{% if app.request.hasPreviousSession() %}
+			{% for message in app.flashes('success') %}
+				<div class="modal fade {{ modal == 'success' ? 'show' }}" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="{{ modal == 'success' ? 'false' : 'true' }}">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="successModalLabel">Confirmation</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								{{ message }}
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+
+		<!-- Modal pour la confirmation -->
+		<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" data-message="">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="successModalLabel">Confirmation</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body"></div>
+				</div>
+			</div>
+		</div>
+
 
 	{% endblock %}
 {% endblock %}

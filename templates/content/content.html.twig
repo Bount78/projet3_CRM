@@ -4,7 +4,7 @@
 	{% block card_user %}
 
 		<div class="container-fluid">
-			<h1 class=" big-title mb-4">Mon Dashboard Futuriste</h1>
+			<h3 class=" big-title mb-4">Bonjour {{ app.user.firstname }}. Ton calendrier</h3>
 			{% if app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ app.flashes('success')[0] }}
