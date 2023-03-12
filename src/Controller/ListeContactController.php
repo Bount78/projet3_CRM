@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ListeContactController extends AbstractController
 {
-    #[Route('/user/liste_contacts', name: '/liste_contacts')]
+    #[Route('/user/liste_contacts', name: 'liste_contacts')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $contacts = $entityManager->getRepository(Contact::class)->findAll();

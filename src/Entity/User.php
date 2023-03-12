@@ -146,6 +146,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /** @var \Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface $user */
+
     public function setPassword(string $password): self
     {
         $this->password = $password;

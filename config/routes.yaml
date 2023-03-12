@@ -26,3 +26,7 @@ add_contact:
   path: '/user/{userId}/contact/{contactId}/link'
   controller: App\Controller\AddContactToUserController::addContact
   methods: [POST]
+
+app_profile_user:
+    path: '/profile/user'
+    controller: App\Controller\ProfileUserController::index

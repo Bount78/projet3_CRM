@@ -2,31 +2,52 @@
 
 {% block page_content %}
 	{% block card_user %}
-		<h3 class="big-title mb-4">Ta liste de contact {{ app.user.firstName }}.</h3>
-
-		<div class="table-responsive">
-			<table class="table table-striped table-hover align-middle">
-				<thead>
+		<div class="table-responsive mx-auto">
+			<h4 class="big-title mb-4">Ta liste de contact
+				{{ app.user.firstname }}.</h4>
+			<table class="table table-striped table-hover border">
+				<thead class="table-primary">
 					<tr>
-						<th scope="col">Nom</th>
-						<th scope="col">Email</th>
-						<th scope="col">Téléphone</th>
-						<th scope="col">Adresse</th>
+						<th class="border-top-0" scope="col">Nom complet</th>
+						<th class="border-top-0" scope="col">Email</th>
+						<th class="border-top-0" scope="col">Téléphone</th>
+						<th class="border-top-0" scope="col">Type de contact</th>
+						<th class="border-top-0" scope="col">Actions</th>
+						<!-- Nouvelle colonne pour les actions -->
 					</tr>
 				</thead>
 				<tbody>
 					{% for contact in contacts %}
 						<tr>
-							<td>{{ contact.nom }}</td>
-							<td>{{ contact.email }}</td>
-							<td>{{ contact.telephone }}</td>
-							<td>{{ contact.adresse }}</td>
+							<td>{{ contact.firstName }}
+								{{ contact.lastName }}</td>
+							<td>
+								<a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+							</td>
+							<td>
+								<a href="tel:{{ contact.phone }}">{{ contact.phone }}</a>
+							</td>
+							<td>
+								{% if contact.typecontact == 'collaborateur' %}
+									<span class="badge bg-success">{{ contact.typecontact }}</span>
+								{% elseif contact.typecontact == 'client' %}
+									<span class="badge bg-primary">{{ contact.typecontact }}</span>
+								{% elseif contact.typecontact == 'prestataire' %}
+									<span class="badge bg-warning">{{ contact.typecontact }}</span>
+								{% else %}
+									<span class="badge bg-danger">{{ contact.typecontact }}</span>
+								{% endif %}
+							</td>
+							<td>
+								<!-- Nouvelle colonne pour les actions -->
+								<form action="{{ path('app_delete_contact', {'id': contact.id}) }}" method="POST">
+									<button type="submit" class="btn btn-danger">Supprimer</button>
+								</form>
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
-
-
-	{% endblock %}
+	{% endblock  %}
 {% endblock %}

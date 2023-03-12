@@ -97,3 +97,45 @@
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
+
+
+.user-image {
+  display: block;
+  margin: auto;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid var(--secondary-color);
+  box-shadow: 6px 5px 0px rgba(34, 34, 78, 0.6);
+}
+
+.user-image-container {
+  position: relative;
+}
+
+.user-image-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.user-image-container:hover .user-image-overlay {
+  opacity: 1;
+}
+
+.user-image-text {
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}

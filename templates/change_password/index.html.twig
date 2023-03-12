@@ -1,0 +1,21 @@
+{% extends 'dashboard.html.twig' %}
+{% block page_title %}Changement de mot de passe{% endblock %}
+{% block page_content %}
+	{% block card_user %}
+		<div class="card mb-3">
+			<div class="card-header bg-primary text-white">Changer votre mot de passe</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-12">
+						{{ form_start(changePasswordForm) }}
+						{{ form_row(changePasswordForm.oldPassword, { 'attr': {'class': 'form-control mb-3'} }) }}
+						{{ form_row(changePasswordForm.newPassword.first, { 'attr': {'class': 'form-control mb-3'} }) }}
+						{{ form_row(changePasswordForm.newPassword.second, { 'attr': {'class': 'form-control mb-3'} }) }}
+						<button type="submit" class="btn btn-primary mt-3">Changer de mot de passe</button>
+						{{ form_end(changePasswordForm) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endblock %}
+{% endblock %}
