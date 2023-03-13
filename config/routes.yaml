@@ -38,3 +38,8 @@ app_change_password:
     requirements:
         _csrf_token: '^[a-zA-Z0-9_-]*$'
 
+user_index:
+    path: '/admin/user'
+    controller: 'App\Controller\Admin\UserCrudController::index'
+    methods: ['GET']
+

@@ -10,12 +10,22 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use Symfony\Component\Security\Core\User\UserInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\Admin\UserCrudController;
+
 
 
 
 
 class DashboardController extends AbstractDashboardController
 {
+
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
 
     #[Route('/user', name: 'user')]
@@ -77,7 +87,8 @@ class DashboardController extends AbstractDashboardController
         // Vérifie si l'utilisateur a le rôle "ROLE_ADMIN"
         if ($this->isGranted('ROLE_ADMIN')) {
             yield MenuItem::section('Gestion des utilisateurs', 'fa fa-users');
-            yield MenuItem::linkToRoute('Liste des utilisateurs', 'fas fa-list', 'user_index');
+            yield MenuItem::linkToCrud('Liste des utilisateurs', 'fas fa-list', User::class)
+            ->setController(UserCrudController::class);
         }
     }
 
