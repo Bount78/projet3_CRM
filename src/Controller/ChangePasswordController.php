@@ -4,15 +4,16 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ChangePasswordFormType;
-use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Route;
 
-class ChangePasswordController extends AbstractController
+class ChangePasswordController extends AbstractDashboardController
 {
     private $passwordHasher;
     private $entityManager;
@@ -24,7 +25,7 @@ class ChangePasswordController extends AbstractController
     }
 
     #[Route('/profile/change-password', name: 'app_change_password')]
-    public function index(Request $request): Response
+    public function changePassword(Request $request, AdminUrlGenerator $adminUrlGenerator): Response
     {
         $changePasswordForm = $this->createForm(ChangePasswordFormType::class);
         $changePasswordForm->handleRequest($request);
@@ -51,8 +52,11 @@ class ChangePasswordController extends AbstractController
             }
         }
 
+        $changePasswordUrl = $adminUrlGenerator->setController(UserCrudController::class)->setAction('changePassword')->generateUrl();
+
         return $this->render('change_password/index.html.twig', [
             'changePasswordForm' => $changePasswordForm->createView(),
+            'changePasswordUrl' => $changePasswordUrl,
         ]);
     }
 }

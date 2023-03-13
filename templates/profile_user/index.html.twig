@@ -61,9 +61,7 @@
 								{{ form_row(editProfileForm.email, { 'attr': {'class': 'form-control mb-3'} }) }}
 								{{ form_row(editProfileForm.profileImage, { 'attr': {'class': 'form-control mb-3'} }) }}
 								<button type="submit" class="btn btn-primary mt-3">Modifier mes informations</button>
-								<form action="{{ path('app_change_password') }}">
-									<button type="submit" class="btn btn-warning mt-3">Modifier le mot de passe</button>
-								</form>
+								<a href="{{ path('app_change_password') }}" class="btn btn-warning mt-3">Modifier le mot de passe</a>
 								{{ form_end(editProfileForm) }}
 							</div>
 						</div>

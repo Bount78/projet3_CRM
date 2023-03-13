@@ -30,3 +30,11 @@ add_contact:
 app_profile_user:
     path: '/profile/user'
     controller: App\Controller\ProfileUserController::index
+
+app_change_password:
+    path: /profile/change-password
+    controller: App\Controller\ChangePasswordController::changePassword
+    methods: [GET, POST]
+    requirements:
+        _csrf_token: '^[a-zA-Z0-9_-]*$'
+
