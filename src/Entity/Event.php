@@ -32,8 +32,8 @@ class Event
     #[Assert\GreaterThan(propertyPath: "dateStart")]
     private ?\DateTime $dateEnd = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events', cascade: ['remove'])]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'events')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
     private ?User $user = null;
     
 

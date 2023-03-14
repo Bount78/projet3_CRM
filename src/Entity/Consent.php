@@ -26,7 +26,7 @@ class Consent
     private ?\DateTimeInterface $date_consenti = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'consents')]
-    #[ORM\JoinColumn(name: 'user_id_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private ?User $user = null;
 
     public function getId(): ?int

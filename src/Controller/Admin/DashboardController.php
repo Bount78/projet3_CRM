@@ -80,14 +80,14 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
         yield MenuItem::section('Contacts', 'fa fa-address-book');
-        yield MenuItem::linkToRoute('Liste des contacts', 'fa fa-list', 'liste_contacts');
-        yield MenuItem::linkToRoute('Mes contacts', 'fa fa-list', 'user_contacts');
+        yield MenuItem::linkToRoute('Liste des contacts', 'fa-solid fa-user-group', 'liste_contacts');
+        yield MenuItem::linkToRoute('Mes contacts', 'fa-solid fa-people-group', 'user_contacts');
         
 
         // Vérifie si l'utilisateur a le rôle "ROLE_ADMIN"
         if ($this->isGranted('ROLE_ADMIN')) {
             yield MenuItem::section('Gestion des utilisateurs', 'fa fa-users');
-            yield MenuItem::linkToCrud('Liste des utilisateurs', 'fas fa-list', User::class)
+            yield MenuItem::linkToCrud('Liste des utilisateurs', 'fa-solid fa-rectangle-list', User::class)
             ->setController(UserCrudController::class);
         }
     }
