@@ -1,10 +1,10 @@
 {% extends 'dashboard.html.twig' %}
 
-{% block page_title %}Mon profil utilisateur
-{% endblock %}
+{% block page_title %}Mon profil utilisateur{% endblock %}
 
 {% block page_content %}
 	{% block card_user %}
+		{{ parent() }}
 		<div class="row">
 			<div class="col-md-3">
 				<div class="card mb-3">

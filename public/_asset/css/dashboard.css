@@ -2,9 +2,9 @@
   /* CSS HEX */
   --secondary-typo: #707070;
   --primary-typo: #333333;
-  --primary-color: #4d4dff;
-  --secondary-color: #52c41a;
-  --background: #f8f4e3;
+  --primary-color: #80a3f5;
+  --secondary-color: #aeadbe;
+  --background: #F5EEF2;
 
   --bs-primary: #90f1efff;
   --bs-success: #c1fba4ff;
@@ -41,7 +41,7 @@
   */
   
  h1 {
-    color: var(--primary-typo); 
+    color: var(--primary-color); 
   }
   
 #calendar {
@@ -49,53 +49,19 @@
   margin: auto;
 }
 
-
-
-.fc-dayGridMonth-view {
-  border-color: var(--primary-color);
-  border-width: 2px;
+.fc-event-end {
+  background-color: rgb(169, 204, 233);
 }
 
-/* Changer la couleur de fond de la vue "timeGridWeek" */
-.fc-timeGridWeek-view {
-  background-color: var(--background);
-  border-width: 2px;
+.fc-event-end:hover {
+  background-color: rgb(230, 207, 108);
 }
 
-/* Changer la couleur de fond des événements */
-.fc-event {
-  background-color: var(--secondary-color);
-}
 
-/* Changer la couleur de fond des cases de jour */
-.fc-day {
-  background-color: var(--background);
-  border-width: 2px;
-}
 
-/* Changer la couleur de la bordure des cases de jour */
-.fc-day {
-  border-color: var(--primary-color);
-  border-width: 2px;
-}
 
-/* Changer la couleur de la bordure des en-têtes de jour */
-.fc-day-header {
-  border-color: var(--primary-color);
-  border-width: 2px;
-}
-
-/* Changer la couleur des boutons du header */
-.fc button {
-  background-color: var(--primary-color);
-  color: #effaec;
-  border-color: var(--primary-color);
-}
-
-/* Changer la couleur des boutons du header lorsqu'ils sont survolés */
-.fc button:hover {
-  background-color: var(--secondary-color);
-  border-color: var(--secondary-color);
+body {
+  color: rgb(218, 224, 248);
 }
 
 
@@ -139,3 +105,30 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+
+.sidebar, .resizer-handler-left, .ea-search-disabled, table, .modal-content {
+  background-color: rgba(209, 218, 238, 0.849);
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+}
+
+.card-body, .modal-content, .fc-view {
+  color: #333333;
+}
+#particles-js {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.content-header {
+  background: none;
+}
+
+
+/* 
+.content-wrapper{
+    background-color: var(--background);
+} */

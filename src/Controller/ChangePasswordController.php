@@ -34,12 +34,12 @@ class ChangePasswordController extends AbstractDashboardController
             /** @var User $user */
             $user = $this->getUser();
 
-            // Vérifier si l'ancien mot de passe est correct
+            // Check if the old password is correct
             $oldPassword = $changePasswordForm->get('oldPassword')->getData();
             if (!$this->passwordHasher->isPasswordValid($user, $oldPassword)) {
                 $changePasswordForm->get('oldPassword')->addError(new FormError('Le mot de passe actuel est incorrect.'));
             } else {
-                // Mettre à jour le mot de passe
+                // Update the password
                 $newPassword = $changePasswordForm->get('newPassword')->getData();
                 $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
 

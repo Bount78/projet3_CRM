@@ -19,24 +19,24 @@ class ProfileUserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        // Vérifier si l'utilisateur a le rôle ROLE_USER
+        // Check if the user has the ROLE_USER role
         if (!$this->isGranted('ROLE_USER')) {
             throw $this->createAccessDeniedException();
         }
 
-        // Formulaire de modification de profil
+        // Profile Change Form
         $editProfileForm = $this->createForm(EditProfileFormType::class, $user);
         $editProfileForm->handleRequest($request);
 
         if ($editProfileForm->isSubmitted() && $editProfileForm->isValid()) {
-            // Récupérer le fichier de la nouvelle image de profil
+            // Recover the new profile image file
             $profileImageFile = $editProfileForm->get('profileImage')->getData();
 
             if ($profileImageFile) {
-                // Supprimer l'ancienne image de profil
+                // Delete the old profile image
                 $this->deleteProfileImage($user);
 
-                // Renommer et enregistrer la nouvelle image de profil
+                // Rename and save the new profile image
                 $fileName = $user->getFirstName() . '_profile_' . uniqid() . '.' . $profileImageFile->guessExtension();
                 $profileImageFile->move(
                     $this->getParameter('profile_image_directory'),
@@ -59,21 +59,21 @@ class ProfileUserController extends AbstractController
     }
 
     /**
-     * Supprime l'ancienne image de profil d'un utilisateur.
+     * Removes a user’s old profile image.
      */
     private function deleteProfileImage(User $user): void
     {
-        // Récupérer le nom du fichier de l'image de profil
+        // Retrieve the profile image file name
         $fileName = $user->getProfileImage();
 
         if ($fileName) {
-            // Supprimer le fichier de l'image de profil
+            // Delete the file from the profile image
             $filePath = $this->getParameter('profile_image_directory') . '/' . $fileName;
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
 
-            // Supprimer le nom du fichier de l'image de profil de l'entité User
+            // Remove the file name from the User entity profile image
             $user->setProfileImage(null);
         }
     }

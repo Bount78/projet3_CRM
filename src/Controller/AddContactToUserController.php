@@ -16,34 +16,34 @@ class AddContactToUserController extends AbstractController
     #[Route('/user/{userId}/contact/{contactId}/link', name: 'add_contact', methods: ['POST'])]
     public function addContact(Request $request, int $userId, int $contactId, EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
-        // Récupérer l'utilisateur connecté
+        // Retrieve the logged in user
         $user = $entityManager
             ->getRepository(User::class)
             ->find($userId);
 
-        // Récupérer le contact correspondant à l'ID
+        // Retrieve the contact corresponding to the ID
         $contact = $entityManager
             ->getRepository(Contact::class)
             ->find($contactId);
 
-        // Vérifier que le contact existe
+        // Verify that the contact exists
         if (!$contact) {
             return $this->json(['message' => 'Le contact n\'existe pas'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Vérifier que le contact n'est pas déjà lié à l'utilisateur
+        // Verify that the contact is not already linked to the user
         if ($user->getContacts()->contains($contact)) {
             // Si le contact est déjà lié à l'utilisateur, retourner une erreur
             return $this->json(['message' => 'Le contact est déjà lié à l\'utilisateur'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        // Assigner l'utilisateur au contact
+        // Assign the user to the contact
         $contact->addUser($user);
 
-        // Enregistrer le contact dans la base de données
+        // Record the contact in the database
         $entityManager->flush();
 
-        // Retourner un tableau PHP avec un message de succès
+        // Return a PHP array with a success message
         return $this->json(['message' => 'Le contact a été ajouté avec succès']);
     }
 }

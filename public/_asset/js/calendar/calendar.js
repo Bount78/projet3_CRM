@@ -10,7 +10,7 @@ export default class MyCalendar {
   constructor() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
-      themeSystem: 'bootstrap5',
+      // themeSystem: 'bootstrap5',
       initialView: 'dayGridMonth',
       timeZone: 'Europe/Paris',
       headerToolbar: {
@@ -30,8 +30,9 @@ export default class MyCalendar {
       dayMaxEvents: true,
       eventTimeFormat: { hour: 'numeric', minute: '2-digit', hour12: false },
       aspectRatio: 1.35, // valeur par défaut
-      editable: true // permet la modification des événements
+      editable: true, // permet la modification des événements
     });
+
 
     addCustomButtons(calendar);
     loadEvents(calendar);
@@ -61,13 +62,12 @@ export default class MyCalendar {
       center: 'title',
       end: 'addEventButton,editEventButton,deleteEventButton dayGridMonth,timeGridWeek,timeGridDay,listDay'
     });
-
+    
     handleAddEvent(calendar);
-    handleEditEvent(calendar);
     handlesearchEvents(calendar);
+    handleEditEvent(calendar);
     deleteEvent(calendar);
 
     this.calendar = calendar;
   }
 }
-

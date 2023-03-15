@@ -39,8 +39,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Home')
-            ->setFaviconPath('/path/to/favicon.ico')
+            ->setTitle('Masquie')
+            ->setFaviconPath('/images/logo/mask.ico')
             ->disableDarkMode()
             ->renderContentMaximized();
     
@@ -49,29 +49,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureUserMenu(UserInterface $user): UserMenu
     {
-
-
         
         return parent::configureUserMenu($user)
-            // use the given $user object to get the user name
             ->setName($user->getFirstName())
-            // use this method if you don't want to display the name of the user
             ->displayUserName(true)
-
-            // you can return an URL with the avatar image
-            // ->setAvatarUrl('https://...')
-            // ->setAvatarUrl($profileImageUrl)
-            // use this method if you don't want to display the user image
             ->displayUserAvatar(true)
-            // you can also pass an email address to use gravatar's service
             ->setGravatarEmail($user->getEmail())
-
-            // you can use any type of menu item, except submenus
             ->addMenuItems([
                 MenuItem::linkToRoute('Mon Profil', 'fa fa-id-card', 'app_profile_user'),
-                MenuItem::linkToRoute('Settings', 'fa fa-user-cog', 'app_profile_user'),
-                MenuItem::section(),
-                // MenuItem::linkToLogout('Logout', 'fa fa-sign-out'),
             ]);
     }
 
@@ -84,7 +69,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Mes contacts', 'fa-solid fa-people-group', 'user_contacts');
         
 
-        // Vérifie si l'utilisateur a le rôle "ROLE_ADMIN"
+        // Checks if the user has the role "ROLE_ADMIN"
         if ($this->isGranted('ROLE_ADMIN')) {
             yield MenuItem::section('Gestion des utilisateurs', 'fa fa-users');
             yield MenuItem::linkToCrud('Liste des utilisateurs', 'fa-solid fa-rectangle-list', User::class)

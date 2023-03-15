@@ -1,8 +1,6 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
-{% block page_title %}Dashboard de
-	{{ app.user.lastname }}
-{% endblock %}
+{% block page_title %}Bienvenue sur Masquie {{ app.user.firstname }} !{% endblock %}
 
 {% block head_favicon %}
 	<link rel="icon" type="image/png" href="{{ asset('images/logo/mask.svg') }}">
@@ -15,22 +13,48 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.4/main.min.css" integrity="sha256-EAq+X/hXd44MlSOCkm9hchPJT78vQ4UBTT7FBkQl9qE=" crossorigin="anonymous">
 	<link rel="stylesheet" href="{{ asset('_asset/css/dashboard.css') }}">
+
 {% endblock  %}
 
-
-{% block page_content %}{% endblock %}
+{% block page_content %}
+	{% block card_user %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<img src="/images/logo/mask.svg" alt="Logo du site" class="img-fluid float-end" style="max-width: 150px">
+				</div>
+			</div>
+		</div>
+		<div id="particles-js"></div>
+	{% endblock %}
+{% endblock %}
 
 {% block head_javascript %}
 	<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/combine/npm/fullcalendar@6.1.4,npm/fullcalendar@5.11.4"></script>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js" integrity="sha256-z82jYOK/utiAteR0z6FjIOQmdWzvxqXJ6wsXbGJkBwY=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.4/main.min.js" integrity="sha256-Dfd6KUTo4z5AmFLv2yo91WxDAJyDtbZH3PPbf7o/kN4=" crossorigin="anonymous"></script>
 	<script type="module" src="{{ asset('_asset/js/app.js') }}"></script>
-	<script>
-		console.log('Bootstrap:', typeof bootstrap !== 'undefined');
-console.log('jQuery:', typeof jQuery !== 'undefined');
-console.log('FullCalendar:', typeof FullCalendar !== 'undefined');
-	</script>
+	<style>
+		#particles-js {
+			width: 100%;
+			height: 100%;
+			background-color: #130F23;
+			background-image: url('');
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: 50% 50%;
+		}
+	</style>
+{% endblock %}
 
+{% block body_javascript %}
+	{{ parent() }}
+	<script src="{{ asset('/_asset/js/particles.js') }}"></script>
+	<script>
+		particlesJS.load('particles-js', '{{ asset('/_asset/js/particlesjs-config.json') }}', function () {
+console.log('particles.js chargé');
+});
+	</script>
 {% endblock %}

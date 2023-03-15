@@ -2,87 +2,80 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
-use App\Repository\EventRepository;
 use DateTime;
-use Symfony\Component\Security\Core\Security;
+use App\Entity\Event;
+use App\Form\EventType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class EditEventController extends AbstractController
 {
-    #[Route('/event/edit', name: 'edit_event', methods: ['PUT'])]
-    public function editEvent(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
+    #[Route('/event/edit/{id}', name: 'update_event', methods: ['PUT'])]
+    public function updateEvent(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage, int $id): Response
     {
-        // Récupérer l'ID de l'événement à éditer
-        $eventId = $request->query->get('eventId');
-        
-        // Trouver l'événement en base de données
-        $event = $entityManager->getRepository(Event::class)->find($eventId);
-
-        // Vérifier que l'utilisateur est bien propriétaire de l'événement
+        // Retrieve Logged in User ID
         $user = $tokenStorage->getToken()->getUser();
-        if ($event->getUserId() !== $user) {
+    
+        // Retrieve the event to be modified
+        $eventRepository = $entityManager->getRepository(Event::class);
+        $event = $eventRepository->findOneBy(['id' => $id, 'user' => $user]);
+    
+        if (!$event) {
             throw $this->createNotFoundException('Cet événement n\'existe pas');
         }
-
-        // Récupérer les données du formulaire
-        $eventName = $request->request->get('eventName');
-        $eventStartTimestamp = $request->request->get('eventStart');
-        $eventEndTimestamp = $request->request->get('eventEnd');
-
-        // Convertir les timestamps en objets DateTime
-        $eventStart = (new DateTime())->setTimestamp($eventStartTimestamp);
-        $eventEnd = (new DateTime())->setTimestamp($eventEndTimestamp);
-
-        // Mettre à jour l'objet Event
-        $event->setName($eventName)
-            ->setDateStart($eventStart)
-            ->setDateEnd($eventEnd);
-
-        // Persister l'objet en base de données
-        $entityManager->flush();
-
-        // Retourner les informations de l'événement modifié
-        $eventArray = [
-            'id' => $event->getId(),
-            'name' => $event->getName(),
-            'dateStart' => $event->getDateStart()->format(DateTime::ATOM),
-            'dateEnd' => $event->getDateEnd()->format(DateTime::ATOM)
-        ];
-
-        return $this->json(['success' => true, 'event' => $eventArray]);
+    
+        // Update event data with form data
+        $form = $this->createForm(EventType::class, $event);
+        $form->submit($request->request->all(), false);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Persist changes in database
+            $entityManager->flush();
+    
+            // Return modified event information
+            $eventArray = [
+                'id' => $event->getId(),
+                'name' => $event->getName(),
+                'dateStart' => $event->getDateStart()->format(DateTime::ATOM),
+                'dateEnd' => $event->getDateEnd()->format(DateTime::ATOM)
+            ];
+    
+            return $this->json(['success' => true, 'event' => $eventArray]);
+        }
+    
+        return $this->json(['success' => false, 'errors' => $form->getErrors(true, false)]);
     }
+    
+    
+
 
     #[Route('/event/search', name: 'search_event')]
     public function searchEvent(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): JsonResponse
     {
-        // Récupérer la chaîne de recherche
+        // Retrieve the search string
         $data = json_decode($request->getContent(), true);
         $searchQuery = $data['searchTerm'] ?? null;
 
 
-        // Trouver l'événement en base de données
+        // Find the event in database
         $user_id = $tokenStorage->getToken()->getUser()->getId();
         $eventRepository = $entityManager->getRepository(Event::class);
-        // var_dump($eventRepository);
 
         try {
             $event = $eventRepository->findOneBy([
                 'name' => $searchQuery,
                 'user' => $user_id
             ]);
-            // dd($event);
             if (!$event) {
                 return new JsonResponse(['success' => false, 'error' => 'No event found']);
             }
 
-            // Retourner les informations de l'événement
+            // Return the event information
             $eventArray = [
                 'id' => $event->getId(),
                 'name' => $event->getName(),
@@ -96,49 +89,4 @@ class EditEventController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => $e->getMessage()]);
         }
     }
-
-    #[Route('/event/edit/{eventId}', name: 'update_event', methods: ['PUT'])]
-    public function updateEvent(Request $request, EntityManagerInterface $entityManager, Security $security): JsonResponse
-    {
-        // Récupérer l'utilisateur connecté
-        $user = $security->getUser();
-    
-        // Récupérer l'événement à éditer
-        $eventId = $request->request->get('eventId');
-        $event = $entityManager->getRepository(Event::class)->find($eventId);
-    
-        // Vérifier que l'utilisateur est bien propriétaire de l'événement
-        if ($event->getUser() !== $user) {
-            throw $this->createNotFoundException('Cet événement n\'existe pas');
-        }
-    
-        // Récupérer les données du formulaire
-        $eventName = $request->request->get('name');
-        $eventStartTimestamp = $request->request->get('dateStart');
-        $eventEndTimestamp = $request->request->get('datetEnd');
-    
-        // Convertir les timestamps en objets DateTime
-        $eventStart = (new DateTime())->setTimestamp($eventStartTimestamp);
-        $eventEnd = (new DateTime())->setTimestamp($eventEndTimestamp);
-    
-        // Mettre à jour l'objet Event
-        $event->setName($eventName)
-            ->setDateStart($eventStart)
-            ->setDateEnd($eventEnd);
-    
-        // Persister l'objet en base de données
-        $entityManager->flush();
-    
-        // Retourner les informations de l'événement modifié
-        $eventArray = [
-            'id' => $event->getId(),
-            'name' => $event->getName(),
-            'dateStart' => $event->getDateStart()->format(DateTime::ATOM),
-            'dateEnd' => $event->getDateEnd()->format(DateTime::ATOM)
-        ];
-    
-        return new JsonResponse(['success' => true, 'event' => $eventArray]);
-    }
-    
-
 }

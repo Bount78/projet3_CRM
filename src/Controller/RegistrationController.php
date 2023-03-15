@@ -25,7 +25,7 @@ class RegistrationController extends AbstractController
             $file = $form->get('profileImage')->getData();
             $firstName = $form->get('firstName')->getData();
         
-            // Vérifier si un fichier a été téléchargé
+            // Check if a file has been uploaded
             if ($file) {
                 $fileName = $firstName . '_profile_' . uniqid() . '.' . $file->guessExtension();
         

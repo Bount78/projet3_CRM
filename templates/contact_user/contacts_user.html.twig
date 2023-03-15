@@ -2,6 +2,7 @@
 
 {% block page_content %}
 	{% block card_user %}
+		{{ parent() }}
 		<div class="table-responsive mx-auto">
 			<h4 class="big-title mb-4">Ta liste de contact
 				{{ app.user.firstname }}.</h4>
@@ -13,7 +14,6 @@
 						<th class="border-top-0" scope="col">Téléphone</th>
 						<th class="border-top-0" scope="col">Type de contact</th>
 						<th class="border-top-0" scope="col">Actions</th>
-						<!-- Nouvelle colonne pour les actions -->
 					</tr>
 				</thead>
 				<tbody>
@@ -39,7 +39,6 @@
 								{% endif %}
 							</td>
 							<td>
-								<!-- Nouvelle colonne pour les actions -->
 								<form action="{{ path('app_delete_contact', {'id': contact.id}) }}" method="POST">
 									<button type="submit" class="btn btn-danger">Supprimer</button>
 								</form>

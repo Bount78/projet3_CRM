@@ -2,9 +2,9 @@
 
 {% block page_content %}
 	{% block card_user %}
-
+		{{ parent() }}
 		<div class="container-fluid">
-			<h3 class=" big-title mb-4">Bonjour {{ app.user.firstname }}. Ton calendrier</h3>
+			<h3 class=" big-title mb-4">Ton tableau de bord {{ app.user.firstname }}.</h3>
 			{% if app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ app.flashes('success')[0] }}
@@ -15,7 +15,7 @@
 				<div id="calendar"></div>
 			</div>
 
-			{# Bloc pour ajouter un événement  #}
+			{# Add Event Block  #}
 			<div class="modal fade" id="addEventModal" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true" style="display:none;">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -46,9 +46,8 @@
 					</div>
 				</div>
 			</div>
-			{# Fin de bloc pour ajouter un événement  #}
 
-			{# Bloc modifier un événement  #}
+			{# Edit Event Block  #}
 			<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -99,9 +98,8 @@
 					</div>
 				</div>
 			</div>
-			{# Fin de bloc pour mofifier un événement  #}
 
-			{#  bloc pour suppression un événement  #}
+			{#  block to delete an event  #}
 			<div class="modal fade" id="deleteEventModal" tabindex="-1" aria-labelledby="deleteEventModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -111,7 +109,7 @@
 						</div>
 						<div class="modal-body">
 							<form id="deleteEventForm" action="/event/delete" method="DELETE">
-								<input type="hidden" id="eventId" name="eventId" value="">
+								<input type="hidden" id="deleteEventId" name="deleteventId" value="">
 								<div class="mb-3">
 									<label for="searchDeleteEvent" class="form-label">Rechercher un événement</label>
 									<input type="text" class="form-control" id="searchDeleteEvent" name="searchDeleteEvent">
@@ -152,8 +150,5 @@
 					</div>
 				</div>
 			</div>
-			{#  Fin de bloc pour suppression un événement  #}
-
 		{% endblock %}
-
 	{% endblock %}

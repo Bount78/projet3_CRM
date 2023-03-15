@@ -52,7 +52,6 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('admin');
             } else {
                 // Redirect the user to their own dashboard
-                // Replace 'user_dashboard' with the route name of your user dashboard
                 return $this->redirectToRoute('user');
             }
         }

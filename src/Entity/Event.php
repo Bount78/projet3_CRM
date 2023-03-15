@@ -40,10 +40,14 @@ class Event
     #[ORM\OneToMany(mappedBy: 'event_id', targetEntity: Invitation::class)]
     private Collection $invitations;
 
+    #[ORM\ManyToMany(targetEntity: Contact::class, inversedBy: 'events')]
+    private Collection $contacts;
+
 
     public function __construct()
     {
         $this->invitations = new ArrayCollection();
+        $this->contacts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,12 +96,13 @@ class Event
         return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUserId(?User $user): self
     {
-        $this->user = $user_id;
-
+        $this->user = $user;
+    
         return $this;
     }
+    
 
     /**
      * @return Collection<int, Invitation>
@@ -124,6 +129,33 @@ class Event
             if ($invitation->getEventId() === $this) {
                 $invitation->setEventId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->addEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            $contact->removeEvent($this);
         }
 
         return $this;

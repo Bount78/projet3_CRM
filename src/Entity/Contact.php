@@ -43,10 +43,14 @@ class Contact
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'user_contact')]
     private Collection $users;
 
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'contacts')]
+    private Collection $events;
+
     public function __construct()
     {
         $this->invitations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +172,33 @@ class Contact
     {
         if ($this->users->removeElement($user)) {
             $user->removeContact($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->addContact($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeContact($this);
         }
 
         return $this;

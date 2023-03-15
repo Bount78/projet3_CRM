@@ -32,19 +32,19 @@ class ContactUserController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
     
-        // Vérifier que l'utilisateur est bien lié au contact
+        // Verify that the user is linked to the contact
         if (!$user->getContacts()->contains($contact)) {
             throw $this->createNotFoundException('Le contact demandé n\'existe pas.');
         }
     
-        // Supprimer la relation entre l'utilisateur et le contact
+        // Remove the relationship between the user and the contact
         $user->removeContact($contact);
         $entityManager->flush();
     
-        // Afficher un message de confirmation
+        // Display a confirmation message
         $this->addFlash('success', 'Le contact a été retiré de votre liste.');
     
-        // Rediriger l'utilisateur vers la liste de contacts
+        // Redirect user to contact list
         return $this->redirect($request->headers->get('referer'));
     }
     

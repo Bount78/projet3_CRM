@@ -41,6 +41,7 @@ export default function searchEvents(calendar) {
     form.querySelector('#eventName').setAttribute('value', event.name);
     form.querySelector('#eventStart').setAttribute('value', event.dateStart.substring(0, 16));
     form.querySelector('#eventEnd').setAttribute('value', event.dateEnd.substring(0, 16));
+    form.querySelector('#eventId').value = event.id;
   }
 
   const editEventButton = document.querySelector('#editEventButton');

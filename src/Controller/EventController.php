@@ -18,29 +18,29 @@ class EventController extends AbstractController
     #[Route('/event', name: 'app_event')]
     public function addEvent(Request $request, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
-        // Récupérer les données du formulaire
+        // Retrieve data from the form
         $eventName = $request->request->get('eventName');
         $eventStartTimestamp = $request->request->get('eventStart');
         $eventEndTimestamp = $request->request->get('eventEnd');
 
-        // Obtenir l'utilisateur connecté à partir de la session
+        //Get the connected user from the session
         $user = $tokenStorage->getToken()->getUser();
-        // Convertir les timestamps en objets DateTime
+        // Convert timestamps to DateTime objects
         $eventStart = (new DateTime())->setTimestamp($eventStartTimestamp);
         $eventEnd = (new DateTime())->setTimestamp($eventEndTimestamp);
 
-        // Créer un nouvel objet Event
+        // Create a new Event object
         $event = new Event();
         $event->setName($eventName)
             ->setDateStart($eventStart)
             ->setDateEnd($eventEnd)
             ->setUserId($user);
 
-        // Persister l'objet en base de données
+        // Persist object in database
         $entityManager->persist($event);
         $entityManager->flush();
 
-        // Ajouter l'événement au calendrier
+        // Add Event to Calendar
         $eventArray = [
             'id' => $event->getId(),
             'title' => $event->getName(),
